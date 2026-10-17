@@ -93,7 +93,11 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
       focusTarget();
     }
-    history.replaceState(null, "", hash);
+    try {
+      history.replaceState(null, "", hash);
+    } catch {
+      // Sandboxed frames may refuse history updates; scrolling still works.
+    }
   }, []);
 
   const lockScroll = useCallback(() => {
