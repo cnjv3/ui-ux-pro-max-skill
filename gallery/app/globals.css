@@ -2,6 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
+/* shadcn/ui design tokens (HSL channels, consumed via tailwind.config.ts).
+   info/success/warning/destructive-foreground mirror the Tailwind palette
+   shades from the Aero Hero theme snippet (red/blue/emerald/amber). */
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 74% 42%; /* red-700 */
+    --info: 217 91% 60%; /* blue-500 */
+    --info-foreground: 224 76% 48%; /* blue-700 */
+    --success: 160 84% 39%; /* emerald-500 */
+    --success-foreground: 163 94% 24%; /* emerald-700 */
+    --warning: 38 92% 50%; /* amber-500 */
+    --warning-foreground: 26 90% 37%; /* amber-700 */
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 91% 71%; /* red-400 */
+    --info: 217 91% 60%; /* blue-500 */
+    --info-foreground: 213 94% 68%; /* blue-400 */
+    --success: 160 84% 39%; /* emerald-500 */
+    --success-foreground: 158 64% 52%; /* emerald-400 */
+    --warning: 38 92% 50%; /* amber-500 */
+    --warning-foreground: 43 96% 56%; /* amber-400 */
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+  }
+}
+
 @layer base {
   body {
     @apply bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100;
