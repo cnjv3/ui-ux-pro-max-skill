@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { StyleData } from "@/lib/types";
 import {
   Filters,
@@ -63,7 +64,15 @@ export function GalleryGrid({ styles }: GalleryGridProps) {
             Browse {activeCount} active UI styles from Antigravity Kit
           </p>
         </div>
-        <DarkModeToggle />
+        <div className="flex items-center gap-3">
+          <Link
+            href="/spline"
+            className="text-sm text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+          >
+            3D showcase
+          </Link>
+          <DarkModeToggle />
+        </div>
       </div>
 
       {/* Search */}
