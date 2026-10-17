@@ -1,0 +1,178 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --ease-cinema: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  background: #050706;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  background: #050706;
+  color: #f0f2eb;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: #b8e64a;
+  color: #050706;
+}
+
+:focus-visible {
+  outline: 2px solid #b8e64a;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@layer components {
+  .label {
+    @apply font-display text-[0.6875rem] font-medium uppercase tracking-label;
+  }
+
+  .hairline {
+    @apply border-bone/15;
+  }
+
+  .skip-link {
+    @apply sr-only;
+  }
+  .skip-link:focus {
+    @apply not-sr-only fixed left-4 top-4 z-[100] bg-bone px-4 py-3 text-sm font-medium text-ink;
+  }
+}
+
+/* ---------- Hero entrance (pure CSS, so it plays before hydration) ---------- */
+
+@keyframes silva-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes silva-rise {
+  from { opacity: 0; transform: translate3d(0, 1.6rem, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes silva-settle {
+  from { transform: scale(1.14); filter: brightness(0.45) saturate(0.85); }
+  to { transform: scale(1.04); filter: brightness(1) saturate(1); }
+}
+
+@keyframes silva-drift {
+  from { transform: scale(1); }
+  to { transform: scale(1.045); }
+}
+
+@keyframes silva-scroll-cue {
+  0% { transform: translateY(-100%); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(220%); opacity: 0; }
+}
+
+.enter-fade {
+  animation: silva-fade 1.8s var(--ease-cinema) both;
+  animation-delay: var(--d, 0ms);
+}
+
+.enter-rise {
+  animation: silva-rise 1.3s var(--ease-cinema) both;
+  animation-delay: var(--d, 0ms);
+}
+
+.hero-settle {
+  animation: silva-settle 3.2s var(--ease-cinema) both;
+}
+
+/* An extremely slow push-in once the image has settled. */
+.hero-drift {
+  animation: silva-drift 40s linear 3.2s both alternate infinite;
+}
+
+.scroll-cue-dot {
+  animation: silva-scroll-cue 2.6s var(--ease-cinema) infinite;
+}
+
+/* ---------- Scroll reveal (only hidden once JS has confirmed it can reveal) ---------- */
+
+.js [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 2rem, 0);
+  transition:
+    opacity 1.2s var(--ease-cinema),
+    transform 1.2s var(--ease-cinema);
+  transition-delay: var(--d, 0ms);
+}
+
+.js [data-reveal="fade"] {
+  transform: none;
+}
+
+.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/*
+ * Images reveal behind a lifting curtain. The image itself is never clipped,
+ * so IntersectionObserver and native lazy-loading still see it as visible.
+ */
+.js [data-reveal="mask"] {
+  position: relative;
+  opacity: 1;
+  transform: none;
+}
+
+.js [data-reveal="mask"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: #050706;
+  transform-origin: 50% 0%;
+  transition: transform 1.6s var(--ease-cinema);
+  transition-delay: var(--d, 0ms);
+  pointer-events: none;
+}
+
+.js [data-reveal="mask"].is-visible::after {
+  transform: scaleY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  .hero-drift,
+  .scroll-cue-dot {
+    animation: none !important;
+  }
+
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .js [data-reveal="mask"]::after {
+    display: none;
+  }
+}
