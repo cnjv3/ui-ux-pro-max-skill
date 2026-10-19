@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Marfil Restaurante</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap">
+<style>
+  /* Layout: menú ilustrado sobre papel marfil — texto a la izquierda, platos dibujados que giran y flotan a la derecha, ingredientes dispersos en los márgenes como en una mesa vista desde arriba. */
+  :root {
+    --bg: #F3EFE9;          /* marfil */
+    --fg: #202020;          /* carbón */
+    --muted: #5B5550;
+    --accent: #782F38;      /* burdeos */
+    --accent-hover: #5F242C;
+    --on-accent: #F3EFE9;
+    --bronze: #A98B70;      /* bronce: solo decoración */
+    --bronze-text: #7A6049; /* bronce oscurecido para texto pequeño (AA) */
+    --rule: rgba(169, 139, 112, .45);
+    --band: #202020;
+    --band-fg: #F3EFE9;
+    --band-muted: #BDB3A8;
+    --control: #FBF9F5;
+    --shadow: rgba(32, 32, 32, .16);
+    --paper-opacity: .5;
+
+    /* Colores de los objetos dibujados (platos y comida): iguales en ambos temas */
+    --plate: #FBF9F5; --plate-rim: #E4DBCF;
+    --f-burdeos: #782F38; --f-burdeos-deep: #57212A; --f-burdeos-soft: #A9535E;
+    --f-bronze: #A98B70; --f-bronze-deep: #7B6150; --f-bronze-light: #CDB7A0;
+    --f-cream: #EADBC4; --f-charcoal: #202020; --f-ivory: #F3EFE9; --f-yolk: #D9AE78;
+
+    --display: "Cormorant Garamond", "Cormorant", Georgia, "Times New Roman", serif;
+    --body: "Jost", "Helvetica Neue", Arial, sans-serif;
+
+    --step--1: .8125rem; --step-0: 1rem; --step-1: 1.25rem; --step-2: 1.75rem;
+    --step-3: clamp(2.25rem, 4vw, 3rem); --step-4: clamp(2.75rem, 6.4vw, 4.75rem);
+    --gutter: max(16px, env(safe-area-inset-left, 0px));
+    --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #202020; --fg: #F3EFE9; --muted: #BDB3A8;
+      --accent: #8E3A44; --accent-hover: #A2464F; --on-accent: #F3EFE9;
+      --bronze-text: #C9AE93; --rule: rgba(169, 139, 112, .35);
+      --band: #161515; --band-fg: #F3EFE9; --band-muted: #BDB3A8;
+      --control: #2B2928; --shadow: rgba(0, 0, 0, .5); --paper-opacity: .12;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #202020; --fg: #F3EFE9; --muted: #BDB3A8;
+    --accent: #8E3A44; --accent-hover: #A2464F; --on-accent: #F3EFE9;
+    --bronze-text: #C9AE93; --rule: rgba(169, 139, 112, .35);
+    --band: #161515; --band-fg: #F3EFE9; --band-muted: #BDB3A8;
+    --control: #2B2928; --shadow: rgba(0, 0, 0, .5); --paper-opacity: .12;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: var(--body); font-size: var(--step-0); font-weight: 400; line-height: 1.65;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden; position: relative;
+  }
+  body::after { /* textura de papel */
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: var(--paper-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .47 0 0 0 0 .38 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg);
+  }
+  main, header, footer { position: relative; z-index: 1; }
+  main { overflow-x: clip; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 600; line-height: 1.05; margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+  p { margin: 0; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+  .wrap { width: 100%; max-width: 1180px; margin-inline: auto; padding-left: var(--gutter); padding-right: var(--gutter-r); }
+  .eyebrow {
+    font-size: var(--step--1); letter-spacing: .22em; text-transform: uppercase; font-weight: 500; color: var(--bronze-text);
+    display: inline-flex; align-items: center; gap: .75rem;
+  }
+  .eyebrow::before { content: ""; width: 28px; height: 1px; background: var(--bronze); }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .6rem; cursor: pointer;
+    font: 500 .9375rem/1 var(--body); letter-spacing: .06em; text-decoration: none;
+    padding: 1rem 1.75rem; border-radius: 999px; border: 1px solid var(--accent);
+    transition: background-color .25s ease, color .25s ease, transform .25s ease, border-color .25s ease;
+  }
+  .btn-primary { background: var(--accent); color: var(--on-accent); }
+  .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); transform: translateY(-2px); }
+  .btn-ghost { background: transparent; color: var(--fg); border-color: var(--rule); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-outline { background: transparent; color: var(--accent); padding: .7rem 1.4rem; }
+  .btn-outline:hover { background: var(--accent); color: var(--on-accent); }
+  .btn svg { width: 16px; height: 16px; }
+
+  /* Navegación */
+  .nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 86%, transparent); backdrop-filter: blur(8px); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding-block: 1.1rem; }
+  .logo { display: inline-flex; align-items: baseline; gap: .55rem; text-decoration: none; }
+  .logo b { font: italic 600 1.9rem/1 var(--display); letter-spacing: .01em; }
+  .logo span { font-size: .6875rem; letter-spacing: .28em; text-transform: uppercase; color: var(--bronze-text); }
+  .nav ul { list-style: none; display: flex; gap: 2.25rem; margin: 0; padding: 0; font-size: .9375rem; }
+  .nav ul a { text-decoration: none; position: relative; padding-block: .3rem; }
+  .nav ul a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .3s ease; }
+  .nav ul a:hover::after { transform: scaleX(1); }
+  @media (max-width: 820px) { .nav ul { display: none; } }
+
+  /* Hero */
+  .hero { position: relative; }
+  .hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-items: center; gap: 2rem; padding-block: 2.5rem 5rem; }
+  .hero-copy { display: grid; gap: 1.6rem; max-width: 34rem; min-width: 0; }
+  .hero h1 { font-size: var(--step-4); font-weight: 600; }
+  .hero h1 em { font-style: italic; color: var(--accent); font-weight: 500; }
+  .hero .lede { font-family: var(--display); font-size: var(--step-2); font-weight: 500; line-height: 1.2; }
+  .hero .intro { color: var(--muted); max-width: 30rem; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: .9rem; padding-top: .4rem; }
+  .hero-facts { display: flex; flex-wrap: wrap; gap: 1.75rem; padding-top: 1.4rem; border-top: 1px solid var(--rule); font-size: var(--step--1); color: var(--muted); }
+  .hero-facts strong { display: block; font: 600 1.6rem/1.1 var(--display); color: var(--fg); font-variant-numeric: tabular-nums; }
+  .hero-art { position: relative; aspect-ratio: 1 / 1; width: 100%; max-width: 100%; }
+  .hero-art svg { position: absolute; overflow: visible; }
+  #board { inset: 4% 0 0 6%; width: 92%; height: 92%; filter: drop-shadow(0 28px 36px var(--shadow)); }
+  #bowl { left: -4%; bottom: 0; width: 38%; height: 38%; filter: drop-shadow(0 18px 22px var(--shadow)); }
+  #sticks { inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .hero-badge {
+    position: absolute; right: 2%; top: 6%; width: 7.5rem; height: 7.5rem; border-radius: 50%;
+    display: grid; place-items: center; text-align: center; background: var(--control); color: var(--fg);
+    box-shadow: 0 10px 30px var(--shadow); font-size: .6875rem; letter-spacing: .14em; text-transform: uppercase; line-height: 1.3;
+  }
+  .hero-badge strong { display: block; font: italic 600 1.9rem/1 var(--display); letter-spacing: 0; text-transform: none; color: var(--accent); }
+  @media (max-width: 860px) {
+    .hero .wrap { grid-template-columns: minmax(0, 1fr); padding-block: 1.5rem 3.5rem; }
+    .hero-art { max-width: 520px; margin-inline: auto; }
+  }
+
+  /* Decoración */
+  .decor { position: absolute; pointer-events: none; z-index: 0; }
+  .decor svg { width: 100%; height: 100%; overflow: visible; display: block; }
+  @media (max-width: 600px) { .decor.hide-sm { display: none; } }
+
+  section { position: relative; }
+  .section-head { display: grid; justify-items: center; text-align: center; gap: .9rem; }
+  .section-head h2 { font-size: var(--step-3); }
+  .section-head p { color: var(--muted); max-width: 32rem; }
+
+  /* Carta */
+  .menu .wrap { padding-block: 5rem 6rem; display: grid; gap: 2.75rem; }
+  .tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: .5rem 2.25rem; }
+  .tab {
+    appearance: none; background: none; border: 0; cursor: pointer; color: var(--muted);
+    font: 500 .9375rem/1 var(--body); letter-spacing: .08em; padding: .7rem .1rem; position: relative; transition: color .2s;
+  }
+  .tab::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--accent); transform: scaleX(0); transition: transform .35s cubic-bezier(.7,0,.2,1); }
+  .tab:hover { color: var(--fg); }
+  .tab[aria-selected="true"] { color: var(--accent); }
+  .tab[aria-selected="true"]::after { transform: scaleX(1); }
+  .dishes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2.5rem 2rem; }
+  .dish { display: grid; justify-items: center; text-align: center; gap: .7rem; min-width: 0; }
+  .dish .plate { width: min(100%, 250px); aspect-ratio: 1; max-width: 100%; margin-bottom: .8rem; }
+  .dish .plate { transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+  .dish .plate svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 18px 22px var(--shadow)); }
+  .dish:hover .plate { transform: rotate(14deg) scale(1.03); }
+  .dish h3 { font-size: var(--step-2); }
+  .dish p { font-size: .9375rem; color: var(--muted); max-width: 18rem; }
+  .price { font: 600 1.25rem/1 var(--display); color: var(--bronze-text); font-variant-numeric: tabular-nums; display: inline-flex; align-items: center; gap: .6rem; }
+  .price::before, .price::after { content: ""; width: 18px; height: 1px; background: var(--bronze); }
+  .menu-foot { display: flex; justify-content: center; }
+  @media (max-width: 860px) { .dishes { grid-template-columns: minmax(0, 1fr); max-width: 22rem; margin-inline: auto; } }
+
+  /* Testimonios */
+  .reviews .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 3rem; padding-block: 3rem 7rem; }
+  .reviews-art { position: relative; aspect-ratio: 1; width: 100%; max-width: 520px; }
+  .reviews-art svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 26px 34px var(--shadow)); }
+  .reviews-copy { display: grid; gap: 1.6rem; min-width: 0; }
+  .reviews-copy h2 { font-size: var(--step-3); }
+  .quote { position: relative; padding-left: 2.25rem; min-height: 10.5rem; }
+  .quote::before { content: "\201C"; position: absolute; left: 0; top: -.6rem; font: 600 4rem/1 var(--display); color: var(--bronze); }
+  .quote blockquote { margin: 0; font-family: var(--display); font-size: 1.5rem; line-height: 1.4; font-weight: 500; font-style: italic; max-width: 34rem; }
+  .quote cite { display: block; margin-top: 1rem; font-style: normal; font-size: var(--step--1); letter-spacing: .14em; text-transform: uppercase; color: var(--bronze-text); }
+  .review-controls { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+  .avatars { display: flex; gap: .85rem; }
+  .avatar {
+    appearance: none; cursor: pointer; width: 3.1rem; height: 3.1rem; border-radius: 50%; border: 2px solid transparent;
+    background: var(--control); color: var(--fg); font: 600 1.1rem/1 var(--display); box-shadow: 0 6px 16px var(--shadow);
+    transition: transform .25s, border-color .25s, background-color .25s, color .25s;
+  }
+  .avatar:hover { transform: translateY(-2px); }
+  .avatar[aria-pressed="true"] { border-color: var(--accent); background: var(--accent); color: var(--on-accent); transform: scale(1.12); }
+  .arrows { display: flex; gap: .6rem; margin-left: auto; }
+  .arrow {
+    appearance: none; cursor: pointer; width: 3rem; height: 3rem; border-radius: 50%; display: grid; place-items: center;
+    background: var(--control); color: var(--fg); border: 1px solid var(--rule); transition: border-color .2s, color .2s;
+  }
+  .arrow:hover { border-color: var(--accent); color: var(--accent); }
+  .arrow svg { width: 18px; height: 18px; }
+  @media (max-width: 860px) { .reviews .wrap { grid-template-columns: minmax(0, 1fr); } .reviews-art { max-width: 400px; margin-inline: auto; } .quote { min-height: 0; } }
+
+  /* Reservas */
+  .reserve { background: var(--band); color: var(--band-fg); overflow: hidden; }
+  .reserve .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 3.5rem; padding-block: 5.5rem; position: relative; z-index: 1; }
+  .reserve h2 { font-size: var(--step-3); }
+  .reserve h2 em { color: var(--bronze); font-weight: 500; }
+  .reserve-copy { display: grid; gap: 1.5rem; align-content: start; min-width: 0; }
+  .reserve-copy > p { color: var(--band-muted); max-width: 30rem; }
+  .reserve .eyebrow { color: var(--bronze); }
+  .info { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4rem 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(169, 139, 112, .35); }
+  .info dt { font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; color: var(--bronze); margin-bottom: .35rem; }
+  .info dd { margin: 0; font-size: .9375rem; font-variant-numeric: tabular-nums; }
+  form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4rem 1.5rem; align-content: start; min-width: 0; }
+  .field { display: grid; gap: .45rem; min-width: 0; }
+  .field.full { grid-column: 1 / -1; }
+  .field label { font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; color: var(--band-muted); }
+  .field input, .field select {
+    width: 100%; min-width: 0; font: 400 1rem/1.4 var(--body); color: var(--band-fg); background: transparent;
+    border: 0; border-bottom: 1px solid rgba(243, 239, 233, .3); padding: .55rem 0; border-radius: 0; transition: border-color .2s;
+    color-scheme: dark;
+  }
+  .field select option { color: #202020; background: #F3EFE9; }
+  .field input:focus, .field select:focus { outline: none; border-bottom-color: var(--bronze); }
+  .field input::placeholder { color: rgba(243, 239, 233, .4); }
+  form .btn { grid-column: 1 / -1; justify-self: start; margin-top: .5rem; }
+  .form-note { grid-column: 1 / -1; font-size: .875rem; color: var(--bronze); min-height: 1.4em; }
+  @media (max-width: 860px) { .reserve .wrap { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 480px) { form, .info { grid-template-columns: minmax(0, 1fr); } }
+
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; padding-block: 2rem; font-size: .875rem; color: var(--muted); }
+  footer .logo b { font-size: 1.5rem; color: var(--fg); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#inicio"><b>Marfil</b><span>Cocina de autor</span></a>
+    <nav aria-label="Principal">
+      <ul>
+        <li><a href="#carta">La carta</a></li>
+        <li><a href="#experiencia">Experiencia</a></li>
+        <li><a href="#opiniones">Opiniones</a></li>
+        <li><a href="#reservar">Contacto</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-outline" href="#reservar">Reservar</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="inicio">
+    <div class="decor hide-sm" data-decor="spoons" style="left:-80px; top:-30px; width:160px; height:160px;"></div>
+    <div class="decor hide-sm" data-decor="sprig" style="right:1%; top:2%; width:120px; height:150px;"></div>
+    <div class="decor" data-decor="pepper" style="left:38%; bottom:4%; width:110px; height:60px;"></div>
+    <div class="wrap">
+      <div class="hero-copy">
+        <span class="eyebrow" data-hero>Madrid · Desde 2014</span>
+        <h1 data-hero>Ven a probar.<br><em>Quédate a cenar.</em></h1>
+        <p class="lede" data-hero>La vida es infinitamente deliciosa.</p>
+        <p class="intro" data-hero>Cocina de temporada con producto de pequeños productores, fuego lento y una bodega de 340 referencias. Doce mesas, un solo servicio por noche y tiempo para disfrutarlo.</p>
+        <div class="hero-actions" data-hero>
+          <a class="btn btn-primary" href="#reservar">Reservar mesa
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="#carta">Ver la carta</a>
+        </div>
+        <div class="hero-facts" data-hero id="experiencia">
+          <div><strong>7 pases</strong>Menú degustación</div>
+          <div><strong>95 €</strong>Por persona</div>
+          <div><strong>+55 €</strong>Maridaje opcional</div>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg id="board" viewBox="0 0 200 200"></svg>
+        <svg id="sticks" viewBox="0 0 200 200"></svg>
+        <svg id="bowl" viewBox="0 0 200 200"></svg>
+        <div class="hero-badge" data-badge><span><strong>Gyozas</strong>de carrillera<br>y trufa negra</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="menu" id="carta">
+    <div class="decor hide-sm" data-decor="anise" style="right:3%; top:2.5rem; width:110px; height:110px;"></div>
+    <div class="decor hide-sm" data-decor="sprig" style="left:1%; bottom:3rem; width:110px; height:140px; transform:scaleX(-1) rotate(-20deg);"></div>
+    <div class="decor" data-decor="pepper" style="left:12%; top:4rem; width:90px; height:50px;"></div>
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <span class="eyebrow">La carta</span>
+        <h2>Lo que hay en nuestro plato</h2>
+        <p>Una carta corta que cambia con el mercado. Estos son los platos de esta temporada de otoño.</p>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Secciones de la carta">
+        <button class="tab" role="tab" id="tab-entrantes" aria-selected="false" aria-controls="dishes" data-cat="entrantes">Entrantes</button>
+        <button class="tab" role="tab" id="tab-principales" aria-selected="true" aria-controls="dishes" data-cat="principales">Principales</button>
+        <button class="tab" role="tab" id="tab-postres" aria-selected="false" aria-controls="dishes" data-cat="postres">Postres</button>
+      </div>
+      <div class="dishes" id="dishes" role="tabpanel" aria-labelledby="tab-principales"></div>
+      <div class="menu-foot"><a class="btn btn-ghost" href="#reservar">Consultar alérgenos y menú completo</a></div>
+    </div>
+  </section>
+
+  <section class="reviews" id="opiniones">
+    <div class="decor hide-sm" data-decor="pepper" style="left:45%; top:1rem; width:100px; height:60px;"></div>
+    <div class="decor hide-sm" data-decor="anise" style="right:2%; bottom:2rem; width:90px; height:90px;"></div>
+    <div class="wrap">
+      <div class="reviews-art" aria-hidden="true"><svg id="pasta" viewBox="0 0 200 200"></svg></div>
+      <div class="reviews-copy" data-reveal>
+        <span class="eyebrow">Opiniones</span>
+        <h2>Lo que dicen nuestros comensales</h2>
+        <div class="quote" aria-live="polite">
+          <blockquote id="quote-text"></blockquote>
+          <cite id="quote-cite"></cite>
+        </div>
+        <div class="review-controls">
+          <div class="avatars" id="avatars"></div>
+          <div class="arrows">
+            <button class="arrow" id="prev" aria-label="Opinión anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
+            <button class="arrow" id="next" aria-label="Opinión siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reserve" id="reservar">
+    <div class="wrap">
+      <div class="reserve-copy" data-reveal>
+        <span class="eyebrow">Reservas</span>
+        <h2>Una mesa te espera <em>esta noche</em></h2>
+        <p>Reserva con hasta 30 días de antelación. Para grupos de más de 8 personas o eventos privados, escríbenos y preparamos un menú a medida.</p>
+        <dl class="info">
+          <div><dt>Dirección</dt><dd>Calle de Fortuny 14<br>28010 Madrid</dd></div>
+          <div><dt>Horario</dt><dd>Mar – Sáb<br>13:30 – 15:30 · 20:00 – 23:00</dd></div>
+          <div><dt>Teléfono</dt><dd>+34 910 000 142</dd></div>
+          <div><dt>Correo</dt><dd>reservas@marfil.es</dd></div>
+        </dl>
+      </div>
+      <form id="reserve-form" novalidate>
+        <div class="field full"><label for="r-name">Nombre</label><input id="r-name" name="name" autocomplete="name" placeholder="Lucía Fernández" required></div>
+        <div class="field"><label for="r-date">Fecha</label><input id="r-date" name="date" type="date" required></div>
+        <div class="field"><label for="r-time">Hora</label>
+          <select id="r-time" name="time">
+            <option>13:30</option><option>14:00</option><option>14:30</option>
+            <option>20:00</option><option selected>20:30</option><option>21:00</option><option>21:30</option>
+          </select>
+        </div>
+        <div class="field"><label for="r-guests">Comensales</label>
+          <select id="r-guests" name="guests">
+            <option value="1">1 persona</option><option value="2" selected>2 personas</option><option value="3">3 personas</option>
+            <option value="4">4 personas</option><option value="5">5 personas</option><option value="6">6 personas</option>
+          </select>
+        </div>
+        <div class="field"><label for="r-menu">Menú</label>
+          <select id="r-menu" name="menu"><option>Degustación</option><option>Carta</option></select>
+        </div>
+        <button class="btn btn-primary" type="submit">Solicitar reserva</button>
+        <p class="form-note" id="form-note" role="status"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="logo" href="#inicio"><b>Marfil</b></a>
+    <span>Calle de Fortuny 14, Madrid · Cerrado domingo y lunes</span>
+    <span>© 2026 Marfil Restaurante</span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(() => {
+  const NS = "http://www.w3.org/2000/svg";
+  const c = (name) => `var(--${name})`;
+  function el(tag, attrs, parent) {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) {
+      if (k === "fill" || k === "stroke") n.style[k] = attrs[k];
+      else n.setAttribute(k, attrs[k]);
+    }
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  const polar = (r, a) => [100 + r * Math.cos(a), 100 + r * Math.sin(a)];
+
+  function plate(g) {
+    el("circle", { cx: 100, cy: 100, r: 94, fill: c("plate") }, g);
+    el("circle", { cx: 100, cy: 100, r: 93, fill: "none", stroke: c("plate-rim"), "stroke-width": 1.2 }, g);
+    el("circle", { cx: 100, cy: 100, r: 68, fill: "none", stroke: c("plate-rim"), "stroke-width": 1 }, g);
+    el("circle", { cx: 100, cy: 100, r: 86, fill: "none", stroke: c("f-bronze"), "stroke-width": .6, opacity: .7 }, g);
+  }
+  function dots(g, n, rMin, rMax, size, colors, seed, op = 1) {
+    const r = rng(seed);
+    for (let i = 0; i < n; i++) {
+      const [x, y] = polar(rMin + r() * (rMax - rMin), r() * Math.PI * 2);
+      el("circle", { cx: x, cy: y, r: size * (.6 + r() * .6), fill: c(colors[i % colors.length]), opacity: op }, g);
+    }
+  }
+  function leaf(g, x, y, len, rot, color = "f-bronze-deep") {
+    const lg = el("g", { transform: `translate(${x} ${y}) rotate(${rot})` }, g);
+    el("path", { d: `M0 0 Q ${len * .5} ${-len * .38} ${len} 0 Q ${len * .5} ${len * .38} 0 0Z`, fill: c(color) }, lg);
+    el("path", { d: `M1 0 L ${len * .9} 0`, fill: "none", stroke: c("f-ivory"), "stroke-width": .5, opacity: .45 }, lg);
+  }
+
+  const dishes = {
+    tartar(g) {
+      plate(g);
+      const r = rng(3);
+      for (let i = 0; i < 10; i++) { const [x, y] = polar(46, i / 10 * Math.PI * 2); el("circle", { cx: x, cy: y, r: 2.4, fill: c("f-yolk") }, g); }
+      el("circle", { cx: 100, cy: 100, r: 30, fill: c("f-burdeos") }, g);
+      for (let i = 0; i < 40; i++) { const [x, y] = polar(r() * 27, r() * 6.3); el("rect", { x: x - 2, y: y - 2, width: 4, height: 4, rx: 1, fill: c(i % 2 ? "f-burdeos-deep" : "f-burdeos-soft"), transform: `rotate(${r() * 90} ${x} ${y})` }, g); }
+      el("circle", { cx: 104, cy: 96, r: 9, fill: c("f-yolk") }, g);
+      el("circle", { cx: 101, cy: 93, r: 3, fill: c("f-ivory"), opacity: .55 }, g);
+      leaf(g, 80, 118, 14, -30); leaf(g, 118, 80, 12, -150); leaf(g, 76, 86, 10, -110);
+    },
+    carpaccio(g) {
+      plate(g);
+      for (let i = 0; i < 9; i++) { const [x, y] = polar(32, i / 9 * Math.PI * 2); el("circle", { cx: x, cy: y, r: 22, fill: c("f-burdeos-soft"), opacity: .82, stroke: c("f-burdeos"), "stroke-width": .6 }, g); }
+      el("circle", { cx: 100, cy: 100, r: 16, fill: c("f-burdeos") }, g);
+      dots(g, 18, 6, 50, 2.6, ["f-ivory", "f-cream"], 11);
+      dots(g, 8, 15, 48, 3.4, ["f-bronze-deep", "f-bronze"], 12);
+      leaf(g, 96, 98, 12, -40); leaf(g, 104, 104, 11, 140);
+    },
+    croquetas(g) {
+      plate(g);
+      el("circle", { cx: 100, cy: 100, r: 9, fill: c("f-cream") }, g);
+      for (let i = 0; i < 5; i++) {
+        const a = i / 5 * Math.PI * 2 - Math.PI / 2, [x, y] = polar(32, a);
+        el("ellipse", { cx: x, cy: y, rx: 15, ry: 10, fill: c("f-bronze"), transform: `rotate(${a * 180 / Math.PI + 90} ${x} ${y})` }, g);
+        el("ellipse", { cx: x, cy: y, rx: 15, ry: 10, fill: "none", stroke: c("f-bronze-deep"), "stroke-width": 1.2, "stroke-dasharray": "1.5 2.5", transform: `rotate(${a * 180 / Math.PI + 90} ${x} ${y})` }, g);
+        el("ellipse", { cx: x - 3, cy: y - 3, rx: 5, ry: 3, fill: c("f-bronze-light"), opacity: .7, transform: `rotate(${a * 180 / Math.PI + 90} ${x} ${y})` }, g);
+      }
+      dots(g, 14, 50, 58, 1.2, ["f-burdeos"], 21);
+    },
+    risotto(g) {
+      plate(g);
+      el("circle", { cx: 100, cy: 100, r: 50, fill: c("f-cream") }, g);
+      const r = rng(5);
+      for (let i = 0; i < 140; i++) { const [x, y] = polar(Math.sqrt(r()) * 46, r() * 6.3); el("ellipse", { cx: x, cy: y, rx: 2.6, ry: 1.3, fill: c(i % 3 ? "f-ivory" : "f-bronze-light"), transform: `rotate(${r() * 180} ${x} ${y})` }, g); }
+      for (let i = 0; i < 6; i++) { const [x, y] = polar(10 + r() * 26, r() * 6.3); const gg = el("g", { transform: `translate(${x} ${y}) rotate(${r() * 360})` }, g); el("path", { d: "M-8 0 A8 6 0 0 1 8 0 L3 0 L3 6 L-3 6 L-3 0Z", fill: c("f-bronze-deep") }, gg); }
+      for (let i = 0; i < 7; i++) { const [x, y] = polar(r() * 34, r() * 6.3); el("circle", { cx: x, cy: y, r: 5 + r() * 3, fill: c("f-charcoal"), opacity: .78 }, g); }
+      dots(g, 22, 4, 44, .9, ["f-bronze-deep"], 6);
+    },
+    lubina(g) {
+      plate(g);
+      el("ellipse", { cx: 100, cy: 104, rx: 50, ry: 38, fill: c("f-yolk"), opacity: .35 }, g);
+      const fg = el("g", { transform: "rotate(-24 100 100)" }, g);
+      el("rect", { x: 56, y: 82, width: 88, height: 36, rx: 16, fill: c("f-cream") }, fg);
+      el("rect", { x: 56, y: 82, width: 88, height: 15, rx: 7, fill: c("f-bronze-deep") }, fg);
+      for (let i = 0; i < 7; i++) el("path", { d: `M${66 + i * 11} 84 l6 10`, fill: "none", stroke: c("f-charcoal"), "stroke-width": 1.4, opacity: .7 }, fg);
+      for (let i = 0; i < 4; i++) el("path", { d: `M${72 + i * 18} 100 q4 8 0 16`, fill: "none", stroke: c("f-bronze-light"), "stroke-width": 1 }, fg);
+      dots(g, 12, 44, 56, 2, ["f-burdeos", "f-burdeos-soft"], 31);
+      leaf(g, 126, 122, 13, 20); leaf(g, 128, 126, 11, 70);
+    },
+    solomillo(g) {
+      plate(g);
+      el("path", { d: "M44 128 C 70 150, 130 152, 156 120", fill: "none", stroke: c("f-burdeos-deep"), "stroke-width": 9, "stroke-linecap": "round" }, g);
+      for (let i = 0; i < 3; i++) {
+        const sg = el("g", { transform: `translate(${70 + i * 22} ${88 - i * 4}) rotate(${-8 + i * 6})` }, g);
+        el("rect", { x: -14, y: -24, width: 28, height: 48, rx: 9, fill: c("f-bronze-deep") }, sg);
+        el("rect", { x: -10, y: -20, width: 20, height: 40, rx: 7, fill: c("f-burdeos-soft") }, sg);
+        el("rect", { x: -5, y: -13, width: 10, height: 26, rx: 5, fill: c("f-burdeos") }, sg);
+      }
+      dots(g, 10, 56, 62, 1.4, ["f-ivory"], 41);
+      leaf(g, 128, 66, 12, -60); leaf(g, 134, 70, 10, -10);
+    },
+    tarta(g) {
+      plate(g);
+      el("circle", { cx: 100, cy: 100, r: 44, fill: c("f-bronze-light") }, g);
+      for (let i = 0; i < 24; i++) { const [x, y] = polar(42, i / 24 * Math.PI * 2); el("circle", { cx: x, cy: y, r: 3.5, fill: c("f-bronze") }, g); }
+      el("circle", { cx: 100, cy: 100, r: 36, fill: c("f-burdeos") }, g);
+      const r = rng(9);
+      for (let i = 0; i < 26; i++) { const [x, y] = polar(Math.sqrt(r()) * 32, r() * 6.3); el("circle", { cx: x, cy: y, r: 3 + r() * 2.5, fill: c(i % 3 ? "f-burdeos-deep" : "f-burdeos-soft") }, g); }
+      dots(g, 30, 0, 50, .9, ["f-ivory"], 10, .9);
+      leaf(g, 96, 96, 11, -50); leaf(g, 100, 100, 10, 30);
+    },
+    mousse(g) {
+      plate(g);
+      dots(g, 30, 20, 40, 2.2, ["f-bronze-deep", "f-bronze"], 51);
+      const q = el("g", { transform: "rotate(-30 100 100)" }, g);
+      el("ellipse", { cx: 100, cy: 100, rx: 30, ry: 15, fill: c("f-charcoal") }, q);
+      el("path", { d: "M76 98 Q100 86 124 98", fill: "none", stroke: c("f-ivory"), "stroke-width": 1.4, opacity: .25 }, q);
+      el("path", { d: "M80 104 Q100 96 120 104", fill: "none", stroke: c("f-ivory"), "stroke-width": 1, opacity: .18 }, q);
+      for (let i = 0; i < 5; i++) { const [x, y] = polar(52, -1 + i * .35); el("circle", { cx: x, cy: y, r: 3.2 - i * .4, fill: c("f-burdeos") }, g); }
+      leaf(g, 116, 86, 11, -70);
+    },
+    crema(g) {
+      el("circle", { cx: 100, cy: 100, r: 72, fill: c("plate") }, g);
+      el("circle", { cx: 100, cy: 100, r: 72, fill: "none", stroke: c("f-bronze"), "stroke-width": 7 }, g);
+      el("circle", { cx: 100, cy: 100, r: 62, fill: c("f-yolk") }, g);
+      const r = rng(13);
+      for (let i = 0; i < 22; i++) { const [x, y] = polar(Math.sqrt(r()) * 56, r() * 6.3); el("circle", { cx: x, cy: y, r: 6 + r() * 9, fill: c(i % 2 ? "f-bronze" : "f-bronze-deep"), opacity: .35 }, g); }
+      const s = el("g", { transform: "rotate(30 100 100)" }, g);
+      el("rect", { x: 70, y: 96, width: 60, height: 7, rx: 3.5, fill: c("f-bronze-deep") }, s);
+      el("rect", { x: 74, y: 104, width: 54, height: 6, rx: 3, fill: c("f-bronze-deep"), opacity: .85 }, s);
+      leaf(g, 128, 80, 12, -40);
+    },
+    pasta(g) {
+      plate(g);
+      const r = rng(77);
+      el("circle", { cx: 100, cy: 100, r: 50, fill: c("f-burdeos-soft"), opacity: .35 }, g);
+      for (let i = 0; i < 70; i++) {
+        const rad = 6 + r() * 44, a0 = r() * 6.3, sweep = .8 + r() * 1.8, a1 = a0 + sweep;
+        const [x0, y0] = polar(rad, a0), [x1, y1] = polar(rad, a1);
+        el("path", { d: `M${x0} ${y0} A${rad} ${rad} 0 ${sweep > Math.PI ? 1 : 0} 1 ${x1} ${y1}`, fill: "none", stroke: c(i % 4 === 0 ? "f-burdeos" : i % 4 === 1 ? "f-yolk" : "f-burdeos-soft"), "stroke-width": 2.3, "stroke-linecap": "round", opacity: .95 }, g);
+      }
+      el("circle", { cx: 100, cy: 100, r: 13, fill: c("f-burdeos") }, g);
+      dots(g, 18, 0, 40, 1.4, ["f-ivory", "f-cream"], 78);
+      leaf(g, 92, 88, 16, -60); leaf(g, 96, 90, 14, 10); leaf(g, 94, 92, 13, 70);
+      const f = el("g", { transform: "rotate(40 100 100)" }, g);
+      el("rect", { x: 140, y: 96, width: 70, height: 6, rx: 3, fill: c("f-bronze") }, f);
+      el("rect", { x: 118, y: 92, width: 26, height: 14, rx: 4, fill: c("f-bronze") }, f);
+      for (let i = 0; i < 4; i++) el("rect", { x: 98, y: 92.5 + i * 3.6, width: 24, height: 2, rx: 1, fill: c("f-bronze") }, f);
+    }
+  };
+
+  /* Hero: tabla de madera con gyozas, palillos y salsa */
+  function drawBoard(svg) {
+    const defs = el("defs", {}, svg);
+    const grad = el("radialGradient", { id: "wood", cx: "40%", cy: "35%", r: "75%" }, defs);
+    el("stop", { offset: "0%", "stop-color": "#BFA184" }, grad);
+    el("stop", { offset: "100%", "stop-color": "#7B6150" }, grad);
+    const g = el("g", { id: "board-g" }, svg);
+    el("circle", { cx: 100, cy: 100, r: 96, fill: "url(#wood)" }, g);
+    el("circle", { cx: 100, cy: 100, r: 86, fill: "none", stroke: c("f-bronze-deep"), "stroke-width": 2, opacity: .5 }, g);
+    [20, 34, 50, 64, 76].forEach((rr, i) => el("circle", { cx: 98 + i, cy: 102 - i, r: rr, fill: "none", stroke: c("f-bronze-deep"), "stroke-width": .6, opacity: .35 }, g));
+    [[78, 74, -25], [118, 96, 15], [86, 124, -5], [126, 132, 30]].forEach(([x, y, rot]) => {
+      const d = el("g", { transform: `translate(${x} ${y}) rotate(${rot})` }, g);
+      el("path", { d: "M-30 6 C -30 -26, 30 -26, 30 6 Q 0 16 -30 6Z", fill: c("f-ivory"), stroke: c("f-cream"), "stroke-width": 1 }, d);
+      for (let i = -3; i <= 3; i++) el("path", { d: `M${i * 7} -14 Q ${i * 7 + 2} -6 ${i * 7.4} 4`, fill: "none", stroke: c("f-cream"), "stroke-width": 1.1 }, d);
+      el("path", { d: "M-26 4 C -24 -16, 24 -16, 26 4", fill: "none", stroke: c("plate"), "stroke-width": 2, opacity: .7 }, d);
+      const r = rng(x * 7 + y);
+      for (let i = 0; i < 9; i++) el("ellipse", { cx: (r() - .5) * 36, cy: -14 + r() * 16, rx: 1.4, ry: .7, fill: c("f-charcoal"), transform: `rotate(${r() * 180})` }, d);
+    });
+  }
+  function drawSticks(svg) {
+    const g = el("g", { id: "sticks-g" }, svg);
+    [[0, "f-bronze-light"], [9, "f-cream"]].forEach(([off, col]) => {
+      el("path", { d: `M${40 + off} ${26 - off * .3} L${196 + off * .2} ${150 + off}`, fill: "none", stroke: c("f-bronze-deep"), "stroke-width": 6, "stroke-linecap": "round", opacity: .25, transform: "translate(3 5)" }, g);
+      el("path", { d: `M${40 + off} ${26 - off * .3} L${196 + off * .2} ${150 + off}`, fill: "none", stroke: c(col), "stroke-width": 5, "stroke-linecap": "round" }, g);
+      el("path", { d: `M${170 + off * .2} ${129 + off * .9} L${196 + off * .2} ${150 + off}`, fill: "none", stroke: c("f-bronze"), "stroke-width": 5.4, "stroke-linecap": "round" }, g);
+    });
+  }
+  function drawBowl(svg) {
+    const defs = el("defs", {}, svg);
+    const grad = el("radialGradient", { id: "sauce", cx: "45%", cy: "40%", r: "60%" }, defs);
+    el("stop", { offset: "0%", "stop-color": "#A9535E" }, grad);
+    el("stop", { offset: "100%", "stop-color": "#57212A" }, grad);
+    const g = el("g", { id: "bowl-g" }, svg);
+    el("circle", { cx: 100, cy: 100, r: 92, fill: c("plate"), stroke: c("plate-rim"), "stroke-width": 2 }, g);
+    el("circle", { cx: 100, cy: 100, r: 72, fill: "url(#sauce)" }, g);
+    el("path", { d: "M60 80 Q 90 60 130 70", fill: "none", stroke: c("f-ivory"), "stroke-width": 3, opacity: .25, "stroke-linecap": "round" }, g);
+    leaf(g, 96, 100, 46, -150); leaf(g, 100, 102, 50, -20); leaf(g, 98, 104, 40, 80);
+  }
+
+  /* Decoración */
+  const decor = {
+    pepper(svg) { svg.setAttribute("viewBox", "0 0 100 50"); const r = rng(Math.floor(Math.random() * 999)); for (let i = 0; i < 14; i++) el("circle", { cx: 10 + r() * 80, cy: 8 + r() * 34, r: 1.4 + r() * 2, fill: c(i % 3 ? "f-charcoal" : "f-bronze-deep"), opacity: .85 }, svg); },
+    anise(svg) {
+      svg.setAttribute("viewBox", "0 0 100 100");
+      const g = el("g", {}, svg);
+      for (let i = 0; i < 8; i++) { const a = i * 45; el("path", { d: "M50 50 Q 58 34 50 12 Q 42 34 50 50Z", fill: c("f-bronze-deep"), transform: `rotate(${a} 50 50)` }, g); el("circle", { cx: 50, cy: 26, r: 3.4, fill: c("f-bronze-light"), transform: `rotate(${a} 50 50)` }, g); }
+      el("circle", { cx: 50, cy: 50, r: 6, fill: c("f-bronze") }, g);
+    },
+    sprig(svg) {
+      svg.setAttribute("viewBox", "0 0 100 130");
+      el("path", { d: "M50 128 C 46 90, 60 50, 52 6", fill: "none", stroke: c("f-bronze-deep"), "stroke-width": 1.6 }, svg);
+      for (let i = 0; i < 7; i++) { const y = 110 - i * 15; leaf(svg, 50 + (i % 2 ? 2 : -1), y, 26 - i * 2, i % 2 ? -30 : -150, "f-bronze"); }
+    },
+    spoons(svg) {
+      svg.setAttribute("viewBox", "0 0 200 200");
+      [["f-burdeos", 60, 70, 35], ["f-bronze", 105, 100, 40], ["f-bronze-deep", 145, 140, 45]].forEach(([col, x, y, rot], k) => {
+        const g = el("g", { transform: `translate(${x} ${y}) rotate(${rot})` }, svg);
+        el("rect", { x: -90, y: -3, width: 80, height: 6, rx: 3, fill: c("f-bronze-light") }, g);
+        el("ellipse", { cx: 8, cy: 0, rx: 22, ry: 16, fill: c("f-bronze-light") }, g);
+        el("ellipse", { cx: 8, cy: 0, rx: 18, ry: 12.5, fill: c(col) }, g);
+        const r = rng(k + 4);
+        for (let i = 0; i < 14; i++) el("circle", { cx: 8 + (r() - .5) * 28, cy: (r() - .5) * 18, r: .9, fill: c("f-ivory"), opacity: .45 }, g);
+      });
+    }
+  };
+  document.querySelectorAll("[data-decor]").forEach((d) => { const svg = el("svg", { "aria-hidden": "true" }, d); decor[d.dataset.decor](svg); });
+
+  drawBoard(document.getElementById("board"));
+  drawSticks(document.getElementById("sticks"));
+  drawBowl(document.getElementById("bowl"));
+  dishes.pasta(el("g", { id: "pasta-g" }, document.getElementById("pasta")));
+
+  /* Carta */
+  const MENU = {
+    entrantes: [
+      { name: "Tartar de atún rojo", desc: "Atún de almadraba, yema curada en soja y ají amarillo, brotes de mostaza.", price: "24 €", draw: "tartar" },
+      { name: "Carpaccio de remolacha", desc: "Remolacha asada a la sal, queso de cabra de Ávila y nuez garrapiñada.", price: "18 €", draw: "carpaccio" },
+      { name: "Croquetas de ibérico", desc: "Bechamel de leche fresca y jamón de bellota 36 meses. Cinco piezas.", price: "16 €", draw: "croquetas" }
+    ],
+    principales: [
+      { name: "Risotto de setas", desc: "Carnaroli, boletus de temporada, mantequilla tostada y trufa negra rallada en mesa.", price: "32 €", draw: "risotto" },
+      { name: "Lubina a la brasa", desc: "Lubina salvaje con la piel crujiente, beurre blanc de azafrán y aceite de pimentón.", price: "36 €", draw: "lubina" },
+      { name: "Solomillo de ternera", desc: "Ternera gallega madurada 40 días, jugo de vino tinto y sal en escamas.", price: "42 €", draw: "solomillo" }
+    ],
+    postres: [
+      { name: "Tarta de frutos rojos", desc: "Masa sablée, crema de vainilla de Tahití, frambuesas y moras del día.", price: "14 €", draw: "tarta" },
+      { name: "Mousse de chocolate", desc: "Chocolate 70 % de Ecuador, crumble de cacao y coulis de cereza.", price: "13 €", draw: "mousse" },
+      { name: "Crema catalana", desc: "Receta de la casa con canela y piel de limón, caramelizada al momento.", price: "11 €", draw: "crema" }
+    ]
+  };
+  const dishesEl = document.getElementById("dishes");
+  function renderDishes(cat) {
+    dishesEl.innerHTML = "";
+    MENU[cat].forEach((d) => {
+      const art = document.createElement("article");
+      art.className = "dish";
+      art.innerHTML = `<div class="plate"></div><h3></h3><p></p><span class="price"></span>`;
+      const svg = el("svg", { viewBox: "0 0 200 200", "aria-hidden": "true" }, art.querySelector(".plate"));
+      dishes[d.draw](el("g", {}, svg));
+      art.querySelector("h3").textContent = d.name;
+      art.querySelector("p").textContent = d.desc;
+      art.querySelector(".price").textContent = d.price;
+      dishesEl.appendChild(art);
+    });
+  }
+  renderDishes("principales");
+
+  /* Opiniones */
+  const REVIEWS = [
+    { initials: "CM", text: "Fuimos por nuestro aniversario y nos trataron como en casa. El risotto con trufa rallada en la mesa es de esos platos que recuerdas semanas después.", cite: "Clara Martín · Madrid" },
+    { initials: "JR", text: "Servicio impecable sin ser rígido. El sumiller nos propuso un maridaje con vinos pequeños de Gredos que no conocíamos y acertó en cada pase.", cite: "Javier Ruiz · Valencia" },
+    { initials: "AL", text: "Doce mesas, luz cálida y una cocina que no necesita alardes. La lubina estaba en su punto exacto. Ya tenemos la siguiente reserva hecha.", cite: "Ana López · Bilbao" }
+  ];
+  const avatarsEl = document.getElementById("avatars");
+  const qText = document.getElementById("quote-text"), qCite = document.getElementById("quote-cite");
+  let current = 0;
+  REVIEWS.forEach((r, i) => {
+    const b = document.createElement("button");
+    b.className = "avatar"; b.textContent = r.initials; b.setAttribute("aria-label", `Opinión de ${r.cite.split(" · ")[0]}`);
+    b.addEventListener("click", () => showReview(i));
+    avatarsEl.appendChild(b);
+  });
+  function setReview(i) {
+    current = i;
+    qText.textContent = REVIEWS[i].text; qCite.textContent = REVIEWS[i].cite;
+    [...avatarsEl.children].forEach((b, k) => b.setAttribute("aria-pressed", String(k === i)));
+  }
+  setReview(0);
+
+  /* Formulario de reserva (demostración: no envía datos) */
+  const form = document.getElementById("reserve-form"), note = document.getElementById("form-note");
+  const dateInput = document.getElementById("r-date");
+  const today = new Date(); today.setDate(today.getDate() + 1);
+  dateInput.value = today.toISOString().slice(0, 10);
+  dateInput.min = new Date().toISOString().slice(0, 10);
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const f = form.elements;
+    const name = f.namedItem("name").value.trim();
+    if (!name) { note.textContent = "Escribe tu nombre para poder guardar la mesa."; f.namedItem("name").focus(); return; }
+    if (!dateInput.value) { note.textContent = "Elige una fecha para la reserva."; dateInput.focus(); return; }
+    const d = new Date(dateInput.value + "T12:00:00").toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" });
+    note.textContent = `Gracias, ${name}. Mesa para ${f.namedItem("guests").value} el ${d} a las ${f.namedItem("time").value}. (Página de demostración: no se ha enviado ninguna reserva.)`;
+  });
+
+  /* Movimiento con GSAP */
+  const hasGsap = !!window.gsap;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const tabs = [...document.querySelectorAll(".tab")];
+  let busy = false;
+
+  function selectTab(btn) {
+    if (busy || btn.getAttribute("aria-selected") === "true") return;
+    tabs.forEach((t) => t.setAttribute("aria-selected", String(t === btn)));
+    dishesEl.setAttribute("aria-labelledby", btn.id);
+    const cat = btn.dataset.cat;
+    if (!hasGsap || reduce) { renderDishes(cat); return; }
+    busy = true;
+    const out = dishesEl.querySelectorAll(".dish");
+    gsap.timeline({ onComplete: () => { busy = false; } })
+      .to(out, { opacity: 0, y: 20, duration: .25, stagger: .05, ease: "power2.in" })
+      .to(dishesEl.querySelectorAll(".plate svg"), { rotation: -90, duration: .3, ease: "power2.in" }, 0)
+      .add(() => {
+        renderDishes(cat);
+        gsap.from(dishesEl.querySelectorAll(".plate svg"), { rotation: 120, scale: .85, duration: .9, stagger: .08, ease: "power3.out" });
+        gsap.from(dishesEl.querySelectorAll(".dish"), { opacity: 0, y: 26, duration: .6, stagger: .08, ease: "power3.out", clearProps: "opacity,transform" });
+      });
+  }
+  tabs.forEach((t) => {
+    t.addEventListener("click", () => selectTab(t));
+    t.addEventListener("keydown", (e) => {
+      const i = tabs.indexOf(t);
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        const n = tabs[(i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length];
+        n.focus(); selectTab(n);
+      }
+    });
+  });
+
+  function showReview(i) {
+    i = (i + REVIEWS.length) % REVIEWS.length;
+    if (i === current) return;
+    const dir = i > current ? 1 : -1;
+    if (!hasGsap || reduce) { setReview(i); return; }
+    gsap.to("#pasta-g", { rotation: `+=${dir * 120}`, svgOrigin: "100 100", duration: 1.1, ease: "power3.inOut" });
+    gsap.timeline()
+      .to([qText, qCite], { opacity: 0, x: -14 * dir, duration: .25, ease: "power2.in" })
+      .add(() => setReview(i))
+      .fromTo([qText, qCite], { x: 14 * dir }, { opacity: 1, x: 0, duration: .45, stagger: .05, ease: "power3.out" });
+  }
+  document.getElementById("prev").addEventListener("click", () => showReview(current - 1));
+  document.getElementById("next").addEventListener("click", () => showReview(current + 1));
+
+  if (hasGsap && !reduce) {
+    if (window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+
+    // Entrada del hero: se ejecuta al cargar, no espera al scroll
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+    tl.from(".nav .wrap > *", { y: -12, opacity: 0, duration: .6, stagger: .08 })
+      .from("[data-hero]", { y: 28, opacity: 0, duration: .8, stagger: .09 }, "-=.3")
+      .from("#board", { scale: .82, rotation: -40, opacity: 0, duration: 1.3, transformOrigin: "50% 50%" }, .2)
+      .from("#sticks", { x: 60, y: -40, opacity: 0, duration: 1 }, .8)
+      .from("#bowl", { scale: .6, opacity: 0, duration: .9, ease: "back.out(1.6)", transformOrigin: "50% 50%" }, .9)
+      .from("[data-badge]", { scale: 0, duration: .7, ease: "back.out(2)" }, 1.2)
+      .from(".hero .decor", { opacity: 0, y: 16, duration: 1, stagger: .12 }, .6);
+
+    // Brillo ambiental: la tabla y la salsa giran lentamente
+    gsap.to("#board-g", { rotation: 360, svgOrigin: "100 100", duration: 160, repeat: -1, ease: "none" });
+
+    if (window.ScrollTrigger) {
+      gsap.to("#bowl-g", { rotation: 90, svgOrigin: "100 100", ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
+      gsap.to("#sticks", { x: 24, y: -18, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
+      gsap.fromTo("#pasta-g", { rotation: -50, svgOrigin: "100 100" }, { rotation: 20, svgOrigin: "100 100", ease: "none", scrollTrigger: { trigger: ".reviews", start: "top bottom", end: "bottom top", scrub: true } });
+
+      // Ingredientes con parallax suave
+      document.querySelectorAll(".decor").forEach((d, i) => {
+        gsap.to(d.firstChild, { y: (i % 2 ? -1 : 1) * 40, rotation: (i % 2 ? -1 : 1) * 25, ease: "none", scrollTrigger: { trigger: d.parentElement, start: "top bottom", end: "bottom top", scrub: true } });
+      });
+
+      // Revelados desde un estado visible: solo desplazamiento, nunca ocultos
+      document.querySelectorAll("[data-reveal]").forEach((n) => {
+        gsap.from(n, { y: 36, duration: 1, ease: "power3.out", scrollTrigger: { trigger: n, start: "top 88%" } });
+      });
+      gsap.from(".dish .plate svg", { rotation: -70, duration: 1.3, stagger: .1, ease: "power3.out", scrollTrigger: { trigger: "#dishes", start: "top 85%" } });
+    }
+  }
+})();
+</script>
+</body>
+</html>
