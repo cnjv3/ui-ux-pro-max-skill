@@ -33,6 +33,7 @@
       /* Fuentes autoalojadas: la precarga solo se usa en http(s); al abrir el
          archivo directamente (file://) Chrome rechaza las precargas con
          crossorigin, pero sí carga las @font-face normales. */
+      /* @build:preload-fonts:start (se elimina en la versión de un solo archivo) */
       if (/^https?:$/.test(w.location.protocol)) {
         ['fonts/cormorant-garamond-latin-500-normal.woff2', 'fonts/manrope-latin-wght-normal.woff2'].forEach(function (href) {
           var l = d.createElement('link');
@@ -41,6 +42,7 @@
           d.head.appendChild(l);
         });
       }
+      /* @build:preload-fonts:end */
       try { motion = !w.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
       try { if (w.sessionStorage.getItem('verano:intro') === '1') intro = false; } catch (e) {}
       if (w.location.hash.length > 1) intro = false; /* enlace profundo: directo al contenido */

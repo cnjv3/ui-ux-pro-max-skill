@@ -11,7 +11,16 @@ Está hecha con HTML, CSS y JavaScript sin compilación. Usa GSAP 3.15 (ScrollTr
 
 ## Cómo abrir el sitio
 
-**Opción rápida:** doble clic en `index.html`. Funciona directamente desde el disco (`file://`) y sin conexión a internet.
+**Un solo archivo:** `verano-standalone.html` contiene la web completa (estilos, fuentes, GSAP y scripts incrustados, unos 456 KB). Ábrelo con doble clic, envíalo por correo o súbelo tal cual a cualquier hosting; no necesita carpetas ni conexión. Se genera a partir de las fuentes:
+
+```bash
+cd projects/verano
+python3 tools/build-single.py      # vuelve a generar verano-standalone.html
+```
+
+Para cambiar contenido, edita `js/config.js` (o el CSS/JS) y vuelve a generar: no edites `verano-standalone.html` a mano.
+
+**Versión de desarrollo:** doble clic en `index.html`. También funciona directamente desde el disco (`file://`) y sin conexión a internet.
 
 **Opción recomendada** (así se comporta igual que publicado, con precarga de fuentes):
 
@@ -35,6 +44,8 @@ projects/verano/
 ├── vendor/gsap/        GSAP 3.15.0 + ScrollTrigger + SplitText (licencia estándar gratuita de GSAP)
 ├── fonts/              Cormorant Garamond y Manrope en woff2, subconjunto latino (licencia OFL)
 ├── favicon.svg
+├── tools/build-single.py   Genera la versión de un solo archivo
+├── verano-standalone.html  La web completa en un único HTML (generado)
 ├── MOTION.md           Secuencia de movimiento
 └── README.md
 ```
