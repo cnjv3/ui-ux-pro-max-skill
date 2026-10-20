@@ -133,7 +133,9 @@ h1, h2, h3, h4 { text-wrap: balance; hyphens: none; }
   width: 100%;
   max-width: calc(var(--container) + 2 * var(--gutter));
   margin-inline: auto;
-  padding-inline: var(--gutter);
+  /* Margen lateral que también respeta el notch o la barra del sistema en horizontal */
+  padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
 }
 
 .visually-hidden {
@@ -605,9 +607,20 @@ html:not(.is-demo) [data-demo-only] { display: none !important; }
 .cg-debug-mascota .cup__liquid svg { opacity: 0.6; }
 
 /* 5. Cabecera -------------------------------------------------- */
+/* Franja del área segura superior (teléfonos con notch): mismo color que la cabecera */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 51;
+  height: env(safe-area-inset-top, 0px);
+  background: var(--crema);
+}
 .site-header {
   position: fixed;
-  inset: 0 0 auto 0;
+  top: env(safe-area-inset-top, 0px);
+  left: 0;
+  right: 0;
   z-index: 50;
   height: var(--header-h);
   transition: background-color 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
@@ -686,6 +699,8 @@ html:not(.is-demo) [data-demo-only] { display: none !important; }
   position: fixed;
   inset: 0;
   z-index: 60;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
