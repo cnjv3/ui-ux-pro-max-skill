@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="es-CL" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>VÉRANO — Cucina d'Autore · Restaurante italiano contemporáneo</title>
+  <meta name="description" content="VÉRANO, cucina d'autore: pasta fresca hecha a mano, ingredientes seleccionados y hospitalidad italiana contemporánea. Descubre la carta y solicita tu reserva por WhatsApp.">
+  <meta name="theme-color" content="#171715">
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- Metadatos sociales. PENDIENTE: og:url y og:image necesitan URLs absolutas del dominio final. -->
+  <meta property="og:type" content="restaurant.restaurant">
+  <meta property="og:locale" content="es_CL">
+  <meta property="og:site_name" content="VÉRANO">
+  <meta property="og:title" content="VÉRANO — Cucina d'Autore">
+  <meta property="og:description" content="La tradición italiana, reinterpretada a través de los sentidos. Pasta fresca, cocina de autor y reservas por WhatsApp.">
+  <!-- <meta property="og:url" content="https://DOMINIO-FINAL/"> -->
+  <!-- <meta property="og:image" content="https://DOMINIO-FINAL/img/og-verano.jpg"> -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="VÉRANO — Cucina d'Autore">
+  <meta name="twitter:description" content="La tradición italiana, reinterpretada a través de los sentidos.">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    /* Arranque sin parpadeo: decide antes del primer pintado si hay
+       movimiento y si se muestra la introducción. */
+    (function (d, w) {
+      var h = d.documentElement, intro = true, motion = true;
+      h.className = h.className.replace('no-js', 'js');
+      /* Fuentes autoalojadas: la precarga solo se usa en http(s); al abrir el
+         archivo directamente (file://) Chrome rechaza las precargas con
+         crossorigin, pero sí carga las @font-face normales. */
+      if (/^https?:$/.test(w.location.protocol)) {
+        ['fonts/cormorant-garamond-latin-500-normal.woff2', 'fonts/manrope-latin-wght-normal.woff2'].forEach(function (href) {
+          var l = d.createElement('link');
+          l.rel = 'preload'; l.as = 'font'; l.type = 'font/woff2'; l.href = href;
+          l.crossOrigin = 'anonymous';
+          d.head.appendChild(l);
+        });
+      }
+      try { motion = !w.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+      try { if (w.sessionStorage.getItem('verano:intro') === '1') intro = false; } catch (e) {}
+      if (w.location.hash.length > 1) intro = false; /* enlace profundo: directo al contenido */
+      if (motion) h.classList.add('motion');
+      if (intro) h.classList.add('has-intro');
+      /* Red de seguridad: si el sistema de movimiento no arranca, todo queda visible. */
+      w.__veranoFailsafe = w.setTimeout(function () {
+        if (!h.classList.contains('motion-ready')) {
+          h.classList.remove('motion', 'has-intro');
+          h.classList.add('motion-failed');
+        }
+      }, 3500);
+    })(document, window);
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "VÉRANO",
+    "alternateName": "VÉRANO — Cucina d'Autore",
+    "description": "Restaurante italiano contemporáneo: pasta fresca hecha a mano, ingredientes seleccionados y presentación de autor.",
+    "servesCuisine": "Italiana",
+    "acceptsReservations": "True"
+  }
+  </script>
+</head>
+<body>
+  <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M3 12h17M14 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M21 12H4M10 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="9.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+    <symbol id="i-whatsapp" viewBox="0 0 24 24"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <!-- ============================== INTRO ============================== -->
+  <div class="intro" data-intro>
+    <div class="intro__inner" data-intro-inner aria-hidden="true">
+      <p class="intro__logo">
+        <span class="intro__mask"><span class="intro__char">V</span></span><span class="intro__mask"><span class="intro__char">É</span></span><span class="intro__mask"><span class="intro__char">R</span></span><span class="intro__mask"><span class="intro__char">A</span></span><span class="intro__mask"><span class="intro__char">N</span></span><span class="intro__mask"><span class="intro__char">O</span></span>
+      </p>
+      <span class="intro__line"></span>
+      <p class="intro__desc">Cucina d'Autore</p>
+    </div>
+    <button class="intro__skip" type="button" data-intro-skip>Omitir intro</button>
+  </div>
+
+  <!-- ============================ NAVEGACIÓN =========================== -->
+  <header class="nav" data-nav>
+    <div class="nav__bar">
+      <a class="nav__logo" href="#inicio" aria-label="VÉRANO, ir al inicio">VÉRANO</a>
+      <nav class="nav__links" aria-label="Principal">
+        <ul>
+          <li><a href="#carta" data-nav-link>Carta</a></li>
+          <li><a href="#filosofia" data-nav-link>Filosofía</a></li>
+          <li><a href="#experiencia" data-nav-link>Experiencia</a></li>
+          <li><a href="#contacto" data-nav-link>Contacto</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn--gold btn--sm nav__cta" href="#reservas">Reservar</a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu-movil" data-menu-toggle>
+        <span class="sr-only" data-menu-toggle-label>Abrir menú</span>
+        <span class="nav__toggle-box" aria-hidden="true"><span></span><span></span></span>
+      </button>
+    </div>
+
+    <div class="mmenu" id="menu-movil" data-mmenu hidden>
+      <div class="mmenu__inner">
+        <nav aria-label="Menú móvil">
+          <ol class="mmenu__list">
+            <li><a href="#carta" data-mmenu-link><span class="mmenu__num">01</span>Carta</a></li>
+            <li><a href="#filosofia" data-mmenu-link><span class="mmenu__num">02</span>Filosofía</a></li>
+            <li><a href="#experiencia" data-mmenu-link><span class="mmenu__num">03</span>Experiencia</a></li>
+            <li><a href="#contacto" data-mmenu-link><span class="mmenu__num">04</span>Contacto</a></li>
+          </ol>
+        </nav>
+        <div class="mmenu__foot" data-mmenu-foot>
+          <a class="btn btn--gold btn--block" href="#reservas" data-mmenu-link>Reservar una mesa</a>
+          <p class="mmenu__tagline">La tradición italiana, reinterpretada a través de los sentidos.</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenido" tabindex="-1">
+    <!-- =============================== HERO ============================== -->
+    <section class="hero" id="inicio" aria-labelledby="hero-title" data-section="dark">
+      <div class="hero__media" data-hero-media>
+        <div class="hero__media-inner" data-hero-img>
+          <div class="slot slot--cover" data-slot="hero" data-slot-eager></div>
+        </div>
+        <div class="hero__shade" aria-hidden="true"></div>
+      </div>
+
+      <div class="hero__content">
+        <p class="hero__brand" data-hero="brand">
+          <span>VÉRANO</span><span class="hero__dash" aria-hidden="true"></span><span>Cucina d'Autore</span>
+        </p>
+        <h1 class="hero__title" id="hero-title" data-hero="title">Italia, servida con otra mirada</h1>
+        <p class="hero__lead" data-hero="lead">Pasta estirada a mano, producto de temporada y una mesa pensada para quedarse. La tradición italiana, reinterpretada a través de los sentidos.</p>
+        <div class="hero__actions">
+          <a class="btn btn--light" href="#carta" data-hero="action">
+            <span class="btn__label">Descubrir la carta</span>
+            <svg class="btn__icon" aria-hidden="true"><use href="#i-arrow"/></svg>
+          </a>
+          <a class="btn btn--ghost" href="#reservas" data-hero="action">
+            <span class="btn__label">Reservar una mesa</span>
+          </a>
+        </div>
+      </div>
+
+      <a class="hero__scroll" href="#filosofia" data-hero="scroll">
+        <span class="hero__scroll-label">Desliza</span>
+        <span class="hero__scroll-track" aria-hidden="true"><span class="hero__scroll-dot"></span></span>
+      </a>
+    </section>
+
+    <!-- ============================= FILOSOFÍA =========================== -->
+    <section class="philo section section--ivory" id="filosofia" aria-labelledby="philo-title" data-section="light">
+      <div class="container philo__grid">
+        <div class="philo__media">
+          <div class="frame frame--3x4 philo__photo" data-reveal="mask" data-reveal-dir="up">
+            <div class="frame__inner" data-reveal-inner>
+              <div class="slot slot--cover" data-slot="philosophy"></div>
+            </div>
+          </div>
+          <svg class="seal" viewBox="0 0 120 120" aria-hidden="true" data-seal>
+            <defs><path id="seal-path" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"/></defs>
+            <circle cx="60" cy="60" r="56" fill="none" stroke="currentColor" stroke-width=".6" opacity=".55"/>
+            <text class="seal__text"><textPath href="#seal-path" textLength="286">VÉRANO · CUCINA D'AUTORE · LA TRADIZIONE ·</textPath></text>
+            <path d="M54 47l12-10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <text class="seal__v" x="60" y="76" text-anchor="middle">V</text>
+          </svg>
+        </div>
+
+        <div class="philo__text">
+          <p class="eyebrow" data-reveal="fade"><span class="eyebrow__it">Olfatto</span><span class="eyebrow__rule" aria-hidden="true"></span>Nuestra filosofía</p>
+          <h2 class="h2" id="philo-title" data-split="heading">El verdadero lujo está en los detalles</h2>
+          <p class="lead" data-split="lines">Creemos en una cocina que no necesita levantar la voz: pocos ingredientes, elegidos con cuidado, y el tiempo justo para que cada uno diga lo suyo.</p>
+          <div class="philo__body" data-reveal="stagger">
+            <p>En VÉRANO, la tradición italiana es un punto de partida, no un museo. Partimos de recetas de familia —la sfoglia estirada con rodillo, el ragù que se cocina sin prisa, el tiramisú armado capa por capa— y las miramos de nuevo, con técnica contemporánea y respeto por el producto.</p>
+            <p>Cada plato empieza mucho antes de la cocina: en la elección de la harina, en el punto exacto de un tomate, en el aceite que termina el plato frente a ti. Ese cuidado invisible es nuestra forma más sincera de hospitalidad.</p>
+          </div>
+        </div>
+
+        <ul class="principles">
+          <li class="principle" data-reveal="from-left">
+            <span class="principle__rule" data-reveal="draw" aria-hidden="true"></span>
+            <h3 class="principle__title">Producto</h3>
+            <p>Ingredientes de temporada, elegidos por su sabor antes que por su apariencia.</p>
+          </li>
+          <li class="principle" data-reveal="from-bottom">
+            <span class="principle__rule" data-reveal="draw" aria-hidden="true"></span>
+            <h3 class="principle__title">Oficio</h3>
+            <p>Pasta fresca hecha a mano cada día, con tiempos que no se apuran.</p>
+          </li>
+          <li class="principle" data-reveal="from-right">
+            <span class="principle__rule" data-reveal="draw" aria-hidden="true"></span>
+            <h3 class="principle__title">Hospitalidad</h3>
+            <p>Una mesa cálida y atenta, donde el servicio acompaña sin interrumpir.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- =========================== ESPECIALIDADES ======================== -->
+    <section class="specials section section--dark" id="especialidades" aria-labelledby="specials-title" data-section="dark">
+      <div class="container">
+        <header class="section-head section-head--split">
+          <div>
+            <p class="eyebrow" data-reveal="fade"><span class="eyebrow__it">Gusto</span><span class="eyebrow__rule" aria-hidden="true"></span>Especialidades del chef</p>
+            <h2 class="h2" id="specials-title" data-split="heading">Tres platos, una forma de entender Italia</h2>
+          </div>
+          <p class="section-head__aside" data-reveal="fade">Los platos que mejor cuentan nuestra cocina. Ejemplos de la carta, sujetos a temporada.</p>
+        </header>
+        <div class="specials__list" data-specialties></div>
+      </div>
+    </section>
+
+    <!-- =============================== CARTA ============================= -->
+    <section class="menu section section--paper" id="carta" aria-labelledby="menu-title" data-section="light">
+      <div class="container">
+        <header class="section-head section-head--split menu__head">
+          <div>
+            <p class="eyebrow" data-reveal="fade"><span class="eyebrow__it">La carta</span><span class="eyebrow__rule" aria-hidden="true"></span>Cucina d'autore</p>
+            <h2 class="h2" id="menu-title" data-split="heading">Una carta breve, que cambia con las estaciones</h2>
+          </div>
+          <p class="section-head__aside" data-reveal="fade">Elige una categoría para ver sus platos. Precios en pesos chilenos <span class="nowrap">(de demostración)</span>.</p>
+        </header>
+
+        <div class="menu__tabs-wrap" data-menu-tabs-wrap>
+          <div class="menu__tabs" role="tablist" aria-label="Categorías de la carta" data-menu-tabs>
+            <span class="menu__indicator" aria-hidden="true" data-menu-indicator></span>
+          </div>
+        </div>
+
+        <div class="menu__stage" data-menu-stage></div>
+
+        <aside class="menu__note" aria-label="Alérgenos">
+          <svg aria-hidden="true" viewBox="0 0 24 24" class="menu__note-icon"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M12 10.5v6M12 7.5v.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <p><strong>¿Alergias o restricciones alimentarias?</strong> Esta carta no detalla alérgenos. Consulta directamente con nuestro equipo antes de ordenar y te orientaremos plato por plato.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============================== PROCESO ============================ -->
+    <section class="process section section--olive" id="proceso" aria-labelledby="process-title" data-section="dark">
+      <div class="container process__grid">
+        <div class="process__media">
+          <div class="frame frame--3x4 process__photo" data-reveal="clip">
+            <div class="frame__inner" data-parallax="6">
+              <div class="slot slot--cover" data-slot="process-main"></div>
+            </div>
+            <ul class="tags">
+              <li class="tag" data-reveal="tag">Sfoglia a mano</li>
+              <li class="tag" data-reveal="tag">Corte a cuchillo</li>
+              <li class="tag" data-reveal="tag">Cocción al momento</li>
+            </ul>
+          </div>
+          <div class="frame frame--1x1 process__detail" data-reveal="mask" data-reveal-dir="left">
+            <div class="frame__inner" data-reveal-inner>
+              <div class="slot slot--cover" data-slot="process-detail"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="process__text">
+          <p class="eyebrow" data-reveal="fade"><span class="eyebrow__it">Tatto</span><span class="eyebrow__rule" aria-hidden="true"></span>El oficio</p>
+          <h2 class="h2" id="process-title" data-split="heading">La pasta se hace con las manos</h2>
+          <p class="lead" data-reveal="from-side">Antes de llegar a la mesa, cada plato pasa por manos que conocen el punto exacto de la masa. Así trabajamos, todos los días.</p>
+
+          <div class="steps-wrap">
+            <span class="steps__progress" aria-hidden="true"><span data-steps-progress></span></span>
+            <ol class="steps">
+              <li class="step" data-reveal="step">
+                <span class="step__num">01</span>
+                <div>
+                  <h3 class="step__title">Selección</h3>
+                  <p>Harina, huevos y sémola elegidos por cómo se comportan en la masa, no solo por su origen.</p>
+                </div>
+              </li>
+              <li class="step" data-reveal="step">
+                <span class="step__num">02</span>
+                <div>
+                  <h3 class="step__title">Amasado y reposo</h3>
+                  <p>A mano, hasta lograr una masa lisa y elástica. Después, el reposo: el tiempo también es un ingrediente.</p>
+                </div>
+              </li>
+              <li class="step" data-reveal="step">
+                <span class="step__num">03</span>
+                <div>
+                  <h3 class="step__title">Forma</h3>
+                  <p>Estirada con rodillo, cortada a cuchillo, rellena una a una. Ninguna pieza sale igual a la anterior.</p>
+                </div>
+              </li>
+              <li class="step" data-reveal="step">
+                <span class="step__num">04</span>
+                <div>
+                  <h3 class="step__title">Servicio</h3>
+                  <p>Cocción al momento y un emplatado sobrio: que lo primero que veas sea el producto.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== GALERÍA ============================ -->
+    <section class="gallery section section--dark" id="galeria" aria-labelledby="gallery-title" data-section="dark">
+      <div class="container gallery__head">
+        <div>
+          <p class="eyebrow" data-reveal="fade"><span class="eyebrow__it">Vista</span><span class="eyebrow__rule" aria-hidden="true"></span>Galería</p>
+          <h2 class="h2 gallery__title" id="gallery-title" data-split="heading">Una mesa que se mira antes de probarse</h2>
+        </div>
+        <div class="gallery__controls">
+          <p class="gallery__count"><span class="sr-only">Imagen </span><span data-gallery-current>01</span><span aria-hidden="true"> / </span><span class="sr-only"> de </span><span data-gallery-total>10</span></p>
+          <span class="gallery__progress" aria-hidden="true"><span data-gallery-progress></span></span>
+          <div class="gallery__buttons">
+            <button class="icon-btn" type="button" data-gallery-prev aria-label="Imagen anterior">
+              <svg aria-hidden="true"><use href="#i-arrow-left"/></svg>
+            </button>
+            <button class="icon-btn" type="button" data-gallery-next aria-label="Imagen siguiente">
+              <svg aria-hidden="true"><use href="#i-arrow"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__viewport" role="region" aria-roledescription="carrusel" aria-label="Galería de VÉRANO. Usa las flechas del teclado para avanzar." tabindex="0" data-gallery-track>
+        <ul class="gallery__list" data-gallery-list></ul>
+      </div>
+      <p class="sr-only" aria-live="polite" data-gallery-live></p>
+    </section>
+
+    <!-- ============================ EXPERIENCIAS ========================= -->
+    <section class="experiences section section--ivory" id="experiencia" aria-labelledby="exp-title" data-section="light">
+      <div class="container">
+        <header class="section-head section-head--split">
+          <div>
+            <p class="eyebrow" data-reveal="fade"><span class="eyebrow__it">Udito</span><span class="eyebrow__rule" aria-hidden="true"></span>Experiencias y eventos</p>
+            <h2 class="h2" id="exp-title" data-split="heading">Momentos que merecen su propia mesa</h2>
+          </div>
+          <p class="section-head__aside" data-reveal="fade">El murmullo de la sala, un brindis, la conversación que se alarga. Propuestas para ocasiones que se recuerdan.</p>
+        </header>
+        <div class="experiences__list" data-experiences></div>
+        <p class="demo-note" data-experiences-note hidden>Propuestas de demostración: disponibilidad, condiciones y precios se confirman directamente con el restaurante.</p>
+      </div>
+    </section>
+
+    <!-- ============================== RESERVAS =========================== -->
+    <section class="reserve section section--dark" id="reservas" aria-labelledby="reserve-title" data-section="dark">
+      <div class="container reserve__grid">
+        <div class="reserve__intro">
+          <p class="eyebrow" data-reveal="fade"><span class="eyebrow__it">Prenota</span><span class="eyebrow__rule" aria-hidden="true"></span>Reservas</p>
+          <h2 class="h2" id="reserve-title" data-split="heading">Reserva tu mesa</h2>
+          <p class="reserve__lead" data-reveal="fade">Completa el formulario y prepararemos tu solicitud para enviarla por WhatsApp. La reserva queda confirmada solo cuando el restaurante te responda.</p>
+          <ol class="reserve__steps" data-reveal="stagger">
+            <li><span>01</span>Completa tus datos</li>
+            <li><span>02</span>Envía el mensaje desde WhatsApp</li>
+            <li><span>03</span>Espera nuestra confirmación</li>
+          </ol>
+          <p class="reserve__privacy">Este sitio no guarda tus datos: el formulario solo prepara el texto del mensaje en tu dispositivo.</p>
+        </div>
+
+        <div class="reserve__panel">
+          <form class="form" id="reserva-form" novalidate data-reserve-form>
+            <div class="form__summary" role="alert" tabindex="-1" data-form-summary hidden></div>
+
+            <div class="field">
+              <label class="field__label" for="r-nombre">Nombre</label>
+              <input class="field__input" id="r-nombre" name="nombre" type="text" autocomplete="name" required minlength="2" maxlength="60" aria-describedby="r-nombre-error">
+              <p class="field__error" id="r-nombre-error" data-error-for="nombre"></p>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="r-telefono">Teléfono</label>
+              <input class="field__input" id="r-telefono" name="telefono" type="tel" inputmode="tel" autocomplete="tel" required maxlength="20" placeholder="+56 9 1234 5678" aria-describedby="r-telefono-hint r-telefono-error">
+              <p class="field__hint" id="r-telefono-hint">Con código de país si no es un número chileno.</p>
+              <p class="field__error" id="r-telefono-error" data-error-for="telefono"></p>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label class="field__label" for="r-fecha">Fecha</label>
+                <input class="field__input" id="r-fecha" name="fecha" type="date" required aria-describedby="r-fecha-error">
+                <p class="field__error" id="r-fecha-error" data-error-for="fecha"></p>
+              </div>
+              <div class="field">
+                <label class="field__label" for="r-hora">Hora</label>
+                <select class="field__input field__select" id="r-hora" name="hora" required aria-describedby="r-hora-error" data-time-select>
+                  <option value="">Elige un horario</option>
+                </select>
+                <p class="field__error" id="r-hora-error" data-error-for="hora"></p>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="r-personas" id="r-personas-label">Número de personas</label>
+              <div class="stepper" data-stepper>
+                <button class="stepper__btn" type="button" data-step="-1" aria-label="Una persona menos">
+                  <svg aria-hidden="true"><use href="#i-minus"/></svg>
+                </button>
+                <input class="field__input stepper__input" id="r-personas" name="personas" type="number" inputmode="numeric" required aria-describedby="r-personas-hint r-personas-error">
+                <button class="stepper__btn" type="button" data-step="1" aria-label="Una persona más">
+                  <svg aria-hidden="true"><use href="#i-plus"/></svg>
+                </button>
+              </div>
+              <p class="field__hint" id="r-personas-hint" data-guests-hint></p>
+              <p class="field__error" id="r-personas-error" data-error-for="personas"></p>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="r-comentarios">Comentarios <span class="field__optional">(opcional)</span></label>
+              <textarea class="field__input field__textarea" id="r-comentarios" name="comentarios" rows="3" maxlength="400" aria-describedby="r-comentarios-count" placeholder="Ocasión especial, preferencia de mesa…"></textarea>
+              <p class="field__hint field__count" id="r-comentarios-count" data-count>0 / 400</p>
+            </div>
+
+            <button class="btn btn--gold btn--block form__submit" type="submit" data-submit>
+              <svg class="btn__icon btn__icon--lead" aria-hidden="true"><use href="#i-whatsapp"/></svg>
+              <span class="btn__label" data-submit-label>Preparar solicitud por WhatsApp</span>
+              <span class="btn__spinner" aria-hidden="true"></span>
+            </button>
+            <p class="demo-note demo-note--dark" data-demo-wa hidden>Número de WhatsApp de demostración: reemplázalo en <code>js/config.js</code> antes de publicar.</p>
+          </form>
+
+          <div class="form-success" role="status" tabindex="-1" data-form-success hidden>
+            <svg class="form-success__icon" aria-hidden="true"><use href="#i-whatsapp"/></svg>
+            <h3 class="form-success__title">Tu solicitud está lista en WhatsApp</h3>
+            <p>Revisa el mensaje y <strong>envíalo desde WhatsApp</strong>. Tu reserva no está confirmada hasta que el restaurante te responda.</p>
+            <div class="form-success__actions">
+              <a class="btn btn--gold" href="#" target="_blank" rel="noopener" data-success-link>
+                <span class="btn__label">Abrir WhatsApp de nuevo</span>
+              </a>
+              <button class="btn btn--ghost" type="button" data-success-edit>Editar los datos</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== CONTACTO =========================== -->
+    <section class="contact section section--ivory" id="contacto" aria-labelledby="contact-title" data-section="light">
+      <div class="container contact__grid">
+        <div class="contact__head">
+          <p class="eyebrow" data-reveal="fade"><span class="eyebrow__it">Dove siamo</span><span class="eyebrow__rule" aria-hidden="true"></span>Ubicación y contacto</p>
+          <h2 class="h2" id="contact-title" data-split="heading">Te esperamos a la mesa</h2>
+        </div>
+
+        <div class="contact__block" data-reveal="fade">
+          <h3 class="contact__label">Dirección</h3>
+          <address class="contact__address" data-address></address>
+          <div class="contact__map-action" data-maps></div>
+        </div>
+
+        <div class="contact__block" data-reveal="fade">
+          <h3 class="contact__label">Horarios</h3>
+          <dl class="hours" data-hours></dl>
+        </div>
+
+        <div class="contact__block" data-reveal="fade">
+          <h3 class="contact__label">Contacto</h3>
+          <ul class="contact__list" data-contact-list></ul>
+        </div>
+
+        <div class="contact__map" data-map-embed hidden></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =============================== FOOTER ============================== -->
+  <footer class="footer" data-section="dark">
+    <div class="container">
+      <div class="footer__top">
+        <a class="footer__logo" href="#inicio" aria-label="VÉRANO, volver al inicio">VÉRANO</a>
+        <p class="footer__tagline">Cucina d'Autore — La tradición italiana, reinterpretada a través de los sentidos.</p>
+      </div>
+      <span class="footer__rule" data-reveal="draw" aria-hidden="true"></span>
+      <div class="footer__grid">
+        <nav aria-label="Secundaria">
+          <h2 class="footer__label">Explorar</h2>
+          <ul class="footer__nav">
+            <li><a href="#filosofia">Filosofía</a></li>
+            <li><a href="#especialidades">Especialidades</a></li>
+            <li><a href="#carta">Carta</a></li>
+            <li><a href="#galeria">Galería</a></li>
+            <li><a href="#experiencia">Experiencias</a></li>
+            <li><a href="#reservas">Reservas</a></li>
+          </ul>
+        </nav>
+        <div>
+          <h2 class="footer__label">Contacto</h2>
+          <ul class="footer__contact" data-footer-contact></ul>
+        </div>
+        <div>
+          <h2 class="footer__label">Horarios</h2>
+          <dl class="hours hours--compact" data-hours></dl>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>© <span data-year>2026</span> VÉRANO. Marca ficticia creada para una demostración: fotografías, precios y datos de contacto pendientes de confirmar.</p>
+        <a class="footer__top-link" href="#inicio">Volver arriba</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================= BOTÓN FLOTANTE WHATSAPP ===================== -->
+  <a class="wa-float" href="#" target="_blank" rel="noopener" data-wa-float aria-label="Escribir por WhatsApp (se abre en una nueva pestaña)">
+    <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>
+    <span class="wa-float__label" aria-hidden="true">WhatsApp</span>
+  </a>
+
+  <!-- ============================== LIGHTBOX ============================= -->
+  <dialog class="lightbox" aria-labelledby="lightbox-caption" data-lightbox>
+    <div class="lightbox__inner">
+      <button class="icon-btn lightbox__close" type="button" data-lightbox-close aria-label="Cerrar vista ampliada">
+        <svg aria-hidden="true"><use href="#i-close"/></svg>
+      </button>
+      <figure class="lightbox__figure">
+        <div class="lightbox__media" data-lightbox-media></div>
+        <figcaption class="lightbox__caption" id="lightbox-caption" data-lightbox-caption></figcaption>
+      </figure>
+      <div class="lightbox__nav">
+        <button class="icon-btn" type="button" data-lightbox-prev aria-label="Imagen anterior">
+          <svg aria-hidden="true"><use href="#i-arrow-left"/></svg>
+        </button>
+        <span class="lightbox__count" data-lightbox-count></span>
+        <button class="icon-btn" type="button" data-lightbox-next aria-label="Imagen siguiente">
+          <svg aria-hidden="true"><use href="#i-arrow"/></svg>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <noscript>
+    <p class="noscript">Para ver la carta y usar el formulario de reservas, activa JavaScript o escríbenos directamente por WhatsApp.</p>
+  </noscript>
+
+  <script src="vendor/gsap/gsap.min.js" defer></script>
+  <script src="vendor/gsap/ScrollTrigger.min.js" defer></script>
+  <script src="vendor/gsap/SplitText.min.js" defer></script>
+  <script src="js/config.js" defer></script>
+  <script src="js/app.js" defer></script>
+  <script src="js/motion.js" defer></script>
+</body>
+</html>
