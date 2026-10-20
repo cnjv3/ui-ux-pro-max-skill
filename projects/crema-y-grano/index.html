@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="es-CL" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>CREMA &amp; GRANO · Cafetería</title>
+  <meta name="description" content="CREMA & GRANO: espresso, cafés con leche, especiales, cafés fríos, tés, pastelería y desayunos. Revisa la carta y los precios, reserva tu mesa y encuéntranos.">
+  <meta name="theme-color" content="#FFF7EA">
+  <meta property="og:title" content="CREMA & GRANO · Un pequeño momento, una gran taza">
+  <meta property="og:description" content="Cafetería con carta de cafés, tés, pastelería y desayunos.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/img/mascota/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&amp;family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,0..100;1,9..144,400..700,0..100&amp;display=swap">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="preload" as="image" href="assets/img/mascota/tazita.png">
+  <script>document.documentElement.classList.replace('no-js', 'js');</script>
+  <script src="assets/js/config.js" defer></script>
+  <script src="assets/js/datos-menu.js" defer></script>
+  <script src="assets/js/datos-equipo.js" defer></script>
+  <script src="assets/js/creditos.js" defer></script>
+  <script src="assets/js/mascota.js" defer></script>
+  <script src="assets/js/app.js" defer></script>
+</head>
+<body>
+  <!-- Iconos (SVG en línea, sin dependencias) -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h3.5l2 5-2.4 1.5a11 11 0 0 0 5.4 5.4L15 13.5l5 2V19a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></symbol>
+    <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" class="fill"/></symbol>
+    <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M4 20l1.2-3.8A8.4 8.4 0 1 1 8 19z"/><path d="M9.2 8.4c.2 3.2 3 6.1 6.3 6.4l1.1-1.5-2-1.1-.9.7a4.7 4.7 0 0 1-2.4-2.4l.7-.9-1.1-2z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.6v.01"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+    <symbol id="i-bean" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="7.2" ry="10" class="fill"/><path d="M12.6 2.6c-2.8 3-2.8 6.2-.6 9.4s2.2 6.4-.6 9.4" class="bean-line"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <header class="site-header" data-header>
+    <div class="site-header__inner container">
+      <a class="brand" href="#inicio" aria-label="CREMA &amp; GRANO, volver al inicio">
+        <img class="brand__cup" src="assets/img/mascota/tazita.png" alt="" width="40" height="35">
+        <span class="brand__word">CREMA <span class="amp">&amp;</span> GRANO</span>
+      </a>
+      <nav class="site-nav" aria-label="Principal">
+        <ul class="site-nav__list">
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#menu">Menú</a></li>
+          <li><a href="#precios">Precios</a></li>
+          <li><a href="#nosotros">Nosotros</a></li>
+          <li><a href="#equipo">Equipo</a></li>
+          <li><a href="#ubicacion">Ubicación</a></li>
+          <li><a href="#reservas">Reservas</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn--primary btn--sm site-header__cta" href="#reservas">Reservar</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-movil" data-nav-toggle>
+        <svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg>
+        <span class="visually-hidden">Abrir menú</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-nav" id="menu-movil" data-mobile-nav hidden>
+    <div class="mobile-nav__top container">
+      <span class="brand__word">CREMA <span class="amp">&amp;</span> GRANO</span>
+      <button class="nav-toggle" type="button" data-nav-close>
+        <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>
+        <span class="visually-hidden">Cerrar menú</span>
+      </button>
+    </div>
+    <nav class="mobile-nav__body container" aria-label="Principal (móvil)">
+      <ul>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#menu">Menú</a></li>
+        <li><a href="#precios">Precios</a></li>
+        <li><a href="#nosotros">¿Quiénes somos?</a></li>
+        <li><a href="#equipo">Nuestro equipo</a></li>
+        <li><a href="#ubicacion">Ubicación</a></li>
+        <li><a href="#reservas">Reservas</a></li>
+        <li><a href="#contacto">Contáctanos</a></li>
+      </ul>
+      <a class="btn btn--primary" href="#reservas">Reservar una mesa</a>
+    </nav>
+  </div>
+
+  <main id="contenido">
+    <!-- A · INICIO -->
+    <section id="inicio" class="hero" aria-labelledby="hero-titulo">
+      <div class="hero__beans" aria-hidden="true">
+        <svg class="bean bean--1"><use href="#i-bean"/></svg>
+        <svg class="bean bean--2"><use href="#i-bean"/></svg>
+        <svg class="bean bean--3"><use href="#i-bean"/></svg>
+        <svg class="bean bean--4"><use href="#i-bean"/></svg>
+      </div>
+      <div class="hero__inner container">
+        <div class="hero__brand">
+          <h1 class="wordmark" id="hero-titulo">
+            <span class="wordmark__row"><span class="wordmark__word">Crema</span> <span class="wordmark__amp">&amp;</span></span>
+            <span class="wordmark__row"><span class="wordmark__word">Grano</span></span>
+            <span class="cup cup--hero" data-cup="hero" aria-hidden="true"><span class="cup__float"><span class="cup__tilt"><img class="cup__img" src="assets/img/mascota/tazita.png" alt="" width="780" height="688" decoding="async" fetchpriority="high"></span><span class="cup__bubble">¿Un cafecito?</span></span></span>
+          </h1>
+          <span class="hero__line" aria-hidden="true"></span>
+        </div>
+        <p class="hero__slogan">Un pequeño momento, una gran taza.</p>
+        <p class="hero__text">Pide tu café favorito, elige algo dulce y regálate unos minutos. Aquí la pausa también se sirve en taza.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#menu">Explorar menú <svg class="icon" aria-hidden="true"><use href="#i-arrow-down"/></svg></a>
+          <a class="btn btn--ghost" href="#ubicacion">Encuéntranos <svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg></a>
+        </div>
+        <p class="hero__status open-status" data-open-status aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- B · MENÚ -->
+    <section id="menu" class="menu" aria-labelledby="menu-titulo">
+      <div class="menu__grid container">
+        <div class="menu__aside">
+          <div class="menu__mascot">
+            <span class="cup cup--menu" data-cup="menu" aria-hidden="true"><span class="cup__float"><span class="cup__tilt"><img class="cup__img" src="assets/img/mascota/tazita.png" alt="" width="780" height="688" loading="lazy" decoding="async"></span><span class="cup__bubble" data-menu-bubble>¡Un espresso al tiro!</span></span></span>
+          </div>
+        </div>
+        <div class="menu__main">
+          <div class="menu__head" data-reveal>
+            <h2 class="section-title" id="menu-titulo">Nuestra carta</h2>
+            <p class="section-lead">Siete categorías para cada momento del día. Elige una y la tazita te acompaña.</p>
+          </div>
+          <div class="menu-card" data-reveal>
+            <div class="menu-tabs" role="tablist" aria-label="Categorías de la carta" data-menu-tabs></div>
+            <div class="menu-panels" data-menu-panels>
+              <noscript><p class="menu-noscript">Activa JavaScript para ver la carta completa.</p></noscript>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- C · PRECIOS -->
+    <section id="precios" class="prices" aria-labelledby="precios-titulo">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <h2 class="section-title" id="precios-titulo">Precios</h2>
+          <p class="section-lead">Toda la carta de un vistazo, con los combos de desayuno y las promociones de la semana.</p>
+          <p class="demo-note" data-demo-only>Precios de ejemplo en pesos chilenos.</p>
+        </div>
+        <div class="price-board" data-reveal>
+          <h3 class="visually-hidden">Lista de precios por producto</h3>
+          <div class="price-board__cols" data-price-list></div>
+        </div>
+        <div class="deals">
+          <div class="deals__block" data-reveal>
+            <h3 class="deals__title">Combos de desayuno</h3>
+            <ul class="combo-list" data-combos></ul>
+          </div>
+          <div class="deals__block deals__block--promos" data-reveal>
+            <h3 class="deals__title">Promociones</h3>
+            <ul class="promo-list" data-promos></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D · ¿QUIÉNES SOMOS? -->
+    <section id="nosotros" class="about" aria-labelledby="nosotros-titulo">
+      <div class="about__grid container">
+        <figure class="about__photo about__photo--main" data-reveal>
+          <img src="assets/img/nosotros/nosotros-granos.webp" alt="Molinillo de café antiguo con granos tostados y una cafetera italiana" width="819" height="1024" loading="lazy" decoding="async">
+        </figure>
+        <div class="about__text">
+          <h2 class="section-title" id="nosotros-titulo" data-reveal>¿Quiénes somos?</h2>
+          <p class="about__lead" data-reveal>CREMA &amp; GRANO es una cafetería pensada para hacer una pausa: café bien preparado, algo rico para acompañar y tiempo para disfrutarlo sin apuro.</p>
+          <div class="about__pillars">
+            <div data-reveal>
+              <h3>Pasión por el café</h3>
+              <p>Nos gusta el café en todas sus formas: corto e intenso, suave con leche o helado en un día de calor. Cuidamos cada paso, del grano que elegimos a la temperatura de la leche, para que cada taza salga como nos gusta tomarla.</p>
+            </div>
+            <div data-reveal>
+              <h3>La experiencia que queremos darte</h3>
+              <p>Un lugar cálido donde te reciban por tu nombre, puedas trabajar un rato, conversar o mirar por la ventana. Que entres por un café y te quedes un poco más.</p>
+            </div>
+          </div>
+          <p class="demo-note" data-demo-only data-reveal>Texto y fotos de referencia: reemplázalos por la historia y las fotos reales de tu cafetería.</p>
+        </div>
+        <div class="about__strip">
+          <figure class="about__photo about__photo--stream" data-reveal>
+            <img src="assets/img/nosotros/nosotros-espresso.webp" alt="Chorro de espresso cayendo desde la máquina" width="731" height="975" loading="lazy" decoding="async">
+          </figure>
+          <figure class="about__photo about__photo--pour" data-reveal>
+            <img src="assets/img/nosotros/nosotros-barista.webp" alt="Manos vertiendo leche para dibujar en la espuma de un café" width="900" height="600" loading="lazy" decoding="async">
+          </figure>
+          <figure class="about__photo about__photo--room" data-reveal>
+            <img src="assets/img/nosotros/nosotros-ambiente.webp" alt="Sillas de madera curvada en el salón de una cafetería" width="442" height="552" loading="lazy" decoding="async">
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- E · NUESTRO EQUIPO -->
+    <section id="equipo" class="team" aria-labelledby="equipo-titulo">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <h2 class="section-title" id="equipo-titulo">Nuestro equipo</h2>
+          <p class="section-lead">Las personas detrás de cada taza.</p>
+          <p class="demo-note" data-demo-only>Perfiles de ejemplo: reemplázalos por tu equipo real.</p>
+        </div>
+        <ul class="team__list" data-team tabindex="0" aria-label="Integrantes del equipo"></ul>
+      </div>
+    </section>
+
+    <!-- F · UBICACIÓN -->
+    <section id="ubicacion" class="location" aria-labelledby="ubicacion-titulo">
+      <div class="location__grid container">
+        <div class="location__map" data-map data-reveal></div>
+        <div class="location__info">
+          <h2 class="section-title" id="ubicacion-titulo" data-reveal>Ubicación</h2>
+          <p class="section-lead" data-reveal>Ven a vernos, te guardamos un rincón.</p>
+          <address class="location__address" data-address data-reveal></address>
+          <div class="hours" data-reveal>
+            <h3 class="hours__title"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg> Horario de atención</h3>
+            <p class="open-status" data-open-status></p>
+            <table class="hours__table" data-hours></table>
+          </div>
+          <div class="location__actions" data-location-actions data-reveal></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- G · RESERVAS -->
+    <section id="reservas" class="booking" aria-labelledby="reservas-titulo">
+      <div class="booking__grid container">
+        <div class="booking__intro">
+          <h2 class="section-title" id="reservas-titulo" data-reveal>Reservas</h2>
+          <p class="section-lead" data-reveal>Reserva tu mesa para desayunar, trabajar un rato o celebrar algo chiquito.</p>
+          <ul class="booking__points" data-reveal>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span>Te contactamos para confirmar la disponibilidad.</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span data-booking-window>Reservas dentro del horario de atención, hasta 60 días antes.</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg><span>¿Grupo grande o evento? <a href="#contacto">Escríbenos</a>.</span></li>
+          </ul>
+        </div>
+        <form class="form-card" id="form-reserva" novalidate data-booking-form data-reveal>
+          <div class="form-errors" tabindex="-1" data-error-summary hidden></div>
+          <div class="field">
+            <label for="r-nombre">Nombre</label>
+            <input id="r-nombre" name="nombre" type="text" autocomplete="name" required minlength="2" maxlength="80" aria-describedby="r-nombre-error">
+            <p class="field__error" id="r-nombre-error" data-error-for="nombre"></p>
+          </div>
+          <div class="field">
+            <label for="r-contacto">Teléfono o medio de contacto</label>
+            <input id="r-contacto" name="contacto" type="text" autocomplete="tel" required maxlength="120" aria-describedby="r-contacto-hint r-contacto-error">
+            <p class="field__hint" id="r-contacto-hint">Teléfono, correo o usuario de Instagram.</p>
+            <p class="field__error" id="r-contacto-error" data-error-for="contacto"></p>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="r-fecha">Fecha</label>
+              <input id="r-fecha" name="fecha" type="date" required aria-describedby="r-fecha-error">
+              <p class="field__error" id="r-fecha-error" data-error-for="fecha"></p>
+            </div>
+            <div class="field">
+              <label for="r-hora">Hora</label>
+              <select id="r-hora" name="hora" required aria-describedby="r-hora-hint r-hora-error">
+                <option value="">Elige primero la fecha</option>
+              </select>
+              <p class="field__hint" id="r-hora-hint" data-hour-hint></p>
+              <p class="field__error" id="r-hora-error" data-error-for="hora"></p>
+            </div>
+          </div>
+          <div class="field">
+            <label for="r-personas">Número de personas</label>
+            <div class="stepper" data-stepper>
+              <button type="button" class="stepper__btn" data-step="-1" aria-label="Una persona menos">−</button>
+              <input id="r-personas" name="personas" type="number" inputmode="numeric" min="1" max="12" value="2" required aria-describedby="r-personas-error">
+              <button type="button" class="stepper__btn" data-step="1" aria-label="Una persona más">+</button>
+            </div>
+            <p class="field__error" id="r-personas-error" data-error-for="personas"></p>
+          </div>
+          <div class="field">
+            <label for="r-comentarios">Comentarios <span class="optional">(opcional)</span></label>
+            <textarea id="r-comentarios" name="comentarios" rows="3" maxlength="300" aria-describedby="r-comentarios-count"></textarea>
+            <p class="field__hint field__count" id="r-comentarios-count" data-count-for="r-comentarios">0 / 300</p>
+          </div>
+          <button class="btn btn--primary btn--block" type="submit" data-submit>
+            <span data-submit-label>Solicitar reserva</span>
+            <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+          </button>
+          <div class="form-status" role="status" aria-live="polite" data-form-status hidden></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- H · CONTÁCTANOS -->
+    <section id="contacto" class="contact" aria-labelledby="contacto-titulo">
+      <div class="contact__grid container">
+        <div class="contact__info">
+          <h2 class="section-title" id="contacto-titulo" data-reveal>Contáctanos</h2>
+          <p class="section-lead" data-reveal>¿Una consulta, un pedido especial o solo un saludo? Escríbenos por donde te acomode.</p>
+          <ul class="channels" data-channels data-reveal></ul>
+        </div>
+        <form class="form-card" id="form-contacto" novalidate data-contact-form data-reveal>
+          <h3 class="form-card__title">Envíanos un mensaje</h3>
+          <div class="form-errors" tabindex="-1" data-error-summary hidden></div>
+          <div class="field">
+            <label for="c-nombre">Nombre</label>
+            <input id="c-nombre" name="nombre" type="text" autocomplete="name" required minlength="2" maxlength="80" aria-describedby="c-nombre-error">
+            <p class="field__error" id="c-nombre-error" data-error-for="nombre"></p>
+          </div>
+          <div class="field">
+            <label for="c-contacto">Correo o teléfono</label>
+            <input id="c-contacto" name="contacto" type="text" autocomplete="email" required maxlength="120" aria-describedby="c-contacto-error">
+            <p class="field__error" id="c-contacto-error" data-error-for="contacto"></p>
+          </div>
+          <div class="field">
+            <label for="c-mensaje">Mensaje</label>
+            <textarea id="c-mensaje" name="mensaje" rows="4" required minlength="10" maxlength="1000" aria-describedby="c-mensaje-count c-mensaje-error"></textarea>
+            <p class="field__hint field__count" id="c-mensaje-count" data-count-for="c-mensaje">0 / 1000</p>
+            <p class="field__error" id="c-mensaje-error" data-error-for="mensaje"></p>
+          </div>
+          <button class="btn btn--primary btn--block" type="submit" data-submit>
+            <span data-submit-label>Enviar mensaje</span>
+            <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+          </button>
+          <div class="form-status" role="status" aria-live="polite" data-form-status hidden></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- PIE DE PÁGINA -->
+  <footer class="site-footer" aria-labelledby="footer-marca">
+    <div class="container">
+      <div class="footer-brand">
+        <p class="footer-brand__word" id="footer-marca">
+          <span class="wordmark__row">Crema <span class="amp">&amp;</span></span>
+          <span class="wordmark__row">Grano</span>
+          <span class="cup cup--footer" data-cup="footer" aria-hidden="true"><span class="cup__float"><span class="cup__tilt"><img class="cup__img" src="assets/img/mascota/tazita.png" alt="" width="780" height="688" loading="lazy" decoding="async"></span><span class="cup__bubble">¡Vuelve pronto!</span></span></span>
+        </p>
+        <p class="footer-brand__slogan">Un pequeño momento, una gran taza.</p>
+      </div>
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h2 class="footer-col__title">Explora</h2>
+          <ul class="footer-links">
+            <li><a href="#menu">Menú</a></li>
+            <li><a href="#precios">Precios</a></li>
+            <li><a href="#ubicacion">Ubicación</a></li>
+            <li><a href="#reservas">Reservas</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h2 class="footer-col__title">Visítanos</h2>
+          <div class="footer-visit" data-footer-visit></div>
+        </div>
+        <div class="footer-col">
+          <h2 class="footer-col__title">Escríbenos</h2>
+          <ul class="footer-contact" data-footer-contact></ul>
+        </div>
+        <div class="footer-col">
+          <h2 class="footer-col__title">Síguenos</h2>
+          <div class="footer-social" data-footer-social></div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© <span data-year>2026</span> CREMA &amp; GRANO<span data-demo-only> · Sitio de demostración con datos de ejemplo</span></p>
+        <button class="link-button" type="button" data-open-credits>Créditos de fotografías</button>
+      </div>
+    </div>
+  </footer>
+
+  <dialog class="credits" id="creditos" aria-labelledby="creditos-titulo">
+    <div class="credits__head">
+      <h2 id="creditos-titulo">Créditos de fotografías</h2>
+      <button class="nav-toggle" type="button" data-close-credits>
+        <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>
+        <span class="visually-hidden">Cerrar</span>
+      </button>
+    </div>
+    <p class="credits__intro">Fotos de referencia con licencia Creative Commons Attribution 2.0 (Open Images / Flickr). No muestran productos, locales ni personas de CREMA &amp; GRANO.</p>
+    <ol class="credits__list" data-credits></ol>
+  </dialog>
+
+  <div class="toast" role="status" aria-live="polite" data-toast hidden></div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="10 96 390 344" width="390" height="344">
+  <!--
+    Tazita PROVISIONAL de CREMA & GRANO.
+    Es solo un relleno temporal: la mascota oficial es la ilustración de la tazita
+    que entrega la marca. Para usarla, reemplaza assets/img/mascota/tazita.png
+    (ver README.md, sección «Mascota»).
+  -->
+  <defs>
+    <clipPath id="cuerpo">
+      <path d="M58 140C58 268 96 356 156 364H244C304 356 342 268 342 140Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- platillo -->
+  <ellipse cx="200" cy="392" rx="180" ry="38" fill="#FFFFFF" stroke="#4A281B" stroke-width="7"/>
+  <ellipse cx="200" cy="386" rx="122" ry="21" fill="#F5E8D3"/>
+
+  <!-- asa -->
+  <path d="M318 170C398 160 404 300 312 304" fill="none" stroke="#4A281B" stroke-width="31" stroke-linecap="round"/>
+  <path d="M318 170C398 160 404 300 312 304" fill="none" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round"/>
+
+  <!-- cuerpo -->
+  <path d="M58 140C58 268 96 356 156 364H244C304 356 342 268 342 140Z" fill="#FFFFFF"/>
+  <g clip-path="url(#cuerpo)">
+    <ellipse cx="338" cy="250" rx="64" ry="160" fill="#F5E8D3"/>
+    <path d="M70 318Q200 352 330 318" fill="none" stroke="#B98250" stroke-width="12"/>
+  </g>
+  <path d="M58 140C58 268 96 356 156 364H244C304 356 342 268 342 140" fill="none" stroke="#4A281B" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- borde y café -->
+  <ellipse cx="200" cy="140" rx="142" ry="36" fill="#FFFFFF" stroke="#4A281B" stroke-width="7"/>
+  <ellipse cx="200" cy="144" rx="122" ry="26" fill="#4A281B"/>
+  <ellipse cx="200" cy="147" rx="107" ry="20" fill="#B98250"/>
+  <ellipse cx="200" cy="149" rx="62" ry="10" fill="#6B3F2A" opacity="0.35"/>
+  <ellipse cx="166" cy="140" rx="26" ry="5.5" fill="#FFF7EA" opacity="0.6"/>
+
+  <!-- carita -->
+  <ellipse cx="124" cy="278" rx="21" ry="12" fill="#F2A18E"/>
+  <ellipse cx="276" cy="278" rx="21" ry="12" fill="#F2A18E"/>
+  <ellipse cx="156" cy="246" rx="13.5" ry="17.5" fill="#4A281B"/>
+  <ellipse cx="244" cy="246" rx="13.5" ry="17.5" fill="#4A281B"/>
+  <circle cx="160.5" cy="239.5" r="5.2" fill="#FFFFFF"/>
+  <circle cx="248.5" cy="239.5" r="5.2" fill="#FFFFFF"/>
+  <circle cx="152" cy="253" r="2.2" fill="#FFFFFF"/>
+  <circle cx="240" cy="253" r="2.2" fill="#FFFFFF"/>
+  <path d="M182 268Q200 298 218 268Z" fill="#4A281B" stroke="#4A281B" stroke-width="5" stroke-linejoin="round"/>
+  <ellipse cx="200" cy="282" rx="8.5" ry="5" fill="#F2A18E"/>
+</svg>
