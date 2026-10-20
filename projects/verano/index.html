@@ -48,6 +48,10 @@
       if (w.location.hash.length > 1) intro = false; /* enlace profundo: directo al contenido */
       if (motion) h.classList.add('motion');
       if (intro) h.classList.add('has-intro');
+      /* Carga lenta: si el JS aún no llegó, el logotipo de la intro se ve estático. */
+      if (intro) w.setTimeout(function () {
+        if (!h.classList.contains('motion-ready')) h.classList.add('intro-static');
+      }, 1200);
       /* Red de seguridad: si el sistema de movimiento no arranca, todo queda visible. */
       w.__veranoFailsafe = w.setTimeout(function () {
         if (!h.classList.contains('motion-ready')) {
@@ -134,6 +138,16 @@
   </header>
 
   <main id="contenido" tabindex="-1">
+    <noscript>
+      <div class="noscript">
+        <p><strong>La carta interactiva, la galería y el formulario de reservas necesitan JavaScript.</strong>
+          Actívalo para verlos o escríbenos directamente:
+          <a href="https://wa.me/56900000000">WhatsApp +56&nbsp;9&nbsp;0000&nbsp;0000</a> ·
+          <a href="tel:+56900000000">Tel. +56&nbsp;9&nbsp;0000&nbsp;0000</a>.
+          <!-- PENDIENTE: mismo número que contact.whatsapp y contact.phone en js/config.js -->
+        </p>
+      </div>
+    </noscript>
     <!-- =============================== HERO ============================== -->
     <section class="hero" id="inicio" aria-labelledby="hero-title" data-section="dark">
       <div class="hero__media" data-hero-media>
@@ -542,9 +556,6 @@
     </div>
   </dialog>
 
-  <noscript>
-    <p class="noscript">Para ver la carta y usar el formulario de reservas, activa JavaScript o escríbenos directamente por WhatsApp.</p>
-  </noscript>
 
   <script src="vendor/gsap/gsap.min.js" defer></script>
   <script src="vendor/gsap/ScrollTrigger.min.js" defer></script>

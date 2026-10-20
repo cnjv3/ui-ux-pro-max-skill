@@ -26,6 +26,30 @@ def data_uri(rel, mime):
     return 'data:%s;base64,%s' % (mime, base64.b64encode((ROOT / rel).read_bytes()).decode('ascii'))
 
 
+IMAGE_TYPES = {
+    '.webp': 'image/webp', '.avif': 'image/avif', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
+    '.png': 'image/png', '.gif': 'image/gif', '.svg': 'image/svg+xml',
+}
+IMAGE_EXT = r'\.(?:webp|avif|jpe?g|png|gif|svg)'
+
+
+def image_uri(rel, where):
+    path = (ROOT / rel).resolve()
+    if not path.is_file():
+        sys.exit('Imagen no encontrada (%s): %s' % (where, rel))
+    return data_uri(path.relative_to(ROOT), IMAGE_TYPES[path.suffix.lower()])
+
+
+def inline_config_images(code):
+    """Incrusta las fotos locales referenciadas en config.js (src, srcMobile, image…)."""
+    def repl(m):
+        key, quote, rel = m.group(1), m.group(2), m.group(3)
+        return '%s: %s%s%s' % (key, quote, image_uri(rel, 'js/config.js'), quote)
+    # Solo valores de los campos de imagen (no ejemplos dentro de comentarios).
+    pattern = r"\b(src|srcMobile|image)\s*:\s*(['\"])((?!https?:|data:|//)[^'\"\s]+" + IMAGE_EXT + r")\2"
+    return re.sub(pattern, repl, code, flags=re.I)
+
+
 def inline_script(code):
     # Un "</script" literal dentro del código cerraría la etiqueta antes de tiempo.
     return code.replace('</script', '<\\/script')
@@ -62,13 +86,30 @@ def main():
     if n != 1:
         sys.exit('No se encontró el bloque de precarga de fuentes')
 
+    # Precarga de imágenes locales: dentro de un solo archivo no aporta nada.
+    html = re.sub(r'\n[ \t]*<link rel="preload" as="image" href="(?!https?:|data:)[^"]*"[^>]*>', '', html)
+
+    # Imágenes locales escritas en el HTML
+    def html_img(m):
+        return '%s="%s"' % (m.group(1), image_uri(m.group(2), 'index.html'))
+    html = re.sub(r'\b(src|href|srcset)="((?!https?:|data:|#|mailto:|tel:|//)[^"]+' + IMAGE_EXT + r')"', html_img, html, flags=re.I)
+
+    # Nada del marcado debe depender de archivos al lado del HTML (los scripts
+    # locales se incrustan justo después).
+    markup = re.sub(r'<script src="[^"]+" defer></script>', '', html)
+    markup = re.sub(r'<script>.*?</script>', '', markup, flags=re.S)
+    leftover = re.search(r'\b(?:src|href|srcset)="(?!data:|https?:|#|mailto:|tel:|//)[^"]+"', markup)
+    if leftover:
+        sys.exit('Queda una referencia a un archivo local: %s' % leftover.group(0)[:120])
+
     # Scripts (en el mismo orden; al final del body equivalen a defer)
     for src in re.findall(r'<script src="([^"]+)" defer></script>', html):
         tag = '<script src="%s" defer></script>' % src
-        html = replace_once(html, tag, '<script>\n%s\n</script>' % inline_script(read(src)))
+        code = read(src)
+        if src == 'js/config.js':
+            code = inline_config_images(code)
+        html = replace_once(html, tag, '<script>\n%s\n</script>' % inline_script(code))
 
-    if re.search(r'(src|href)="(?!data:|https?:|#|mailto:|tel:)[^"]+\.(js|css|woff2|svg)"', html):
-        sys.exit('Queda alguna referencia a un archivo local')
 
     OUT.write_text(html, encoding='utf-8')
     print('%s · %.0f KB' % (OUT.name, OUT.stat().st_size / 1024))

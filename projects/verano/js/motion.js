@@ -56,6 +56,17 @@
     return;
   }
 
+  /* La red de seguridad del <head> ya dejó todo visible (carga muy lenta):
+     no se reocultan contenidos ni se repite la entrada. */
+  if (html.classList.contains('motion-failed')) {
+    html.classList.remove('motion', 'has-intro', 'intro-static');
+    rememberIntro();
+    markReady();
+    V.motion = null;
+    updateFloat();
+    return;
+  }
+
   gsap.registerPlugin(ScrollTrigger);
   if (SplitText) gsap.registerPlugin(SplitText);
   ScrollTrigger.config({ ignoreMobileResize: true });
@@ -76,6 +87,22 @@
      girar una tablet), GSAP puede encontrarse un hueco en su lista. */
   function once(trigger, start) {
     return { trigger: trigger, start: start || 'top 85%', toggleActions: 'play none play none' };
+  }
+
+  /* Revelado con valores finales explícitos (fromTo). Con from() GSAP toma
+     como estado final el estilo computado en ese instante, y una transición
+     CSS sobre la misma propiedad (p. ej. opacity en .btn) puede dejar el
+     elemento invisible para siempre. Misma firma que gsap.from(). */
+  var END = { opacity: 1, x: 0, y: 0, xPercent: 0, yPercent: 0, scale: 1, scaleX: 1, scaleY: 1 };
+  function reveal(targets, vars) {
+    var from = {}, to = { clearProps: 'transform' };
+    Object.keys(vars).forEach(function (k) {
+      if (k in END) { from[k] = vars[k]; to[k] = END[k]; }
+      else if (k === 'transformOrigin') from[k] = vars[k];
+      else to[k] = vars[k];
+    });
+    if (to.clearProps === false) delete to.clearProps;
+    return gsap.fromTo(targets, from, to);
   }
 
   /* Tras construir a mitad de página (enlace profundo, recarga, giro de
@@ -189,7 +216,7 @@
       SplitText.create(el, {
         type: 'lines', mask: 'lines', linesClass: 'line', tag: 'span', aria: 'none', autoSplit: true,
         onSplit: function (self) {
-          return gsap.from(self.lines, {
+          return reveal(self.lines, {
             yPercent: 110, duration: 1.15, ease: EASE.reveal, stagger: 0.1,
             scrollTrigger: once(el, 'top 86%')
           });
@@ -203,7 +230,7 @@
       SplitText.create(el, {
         type: 'lines', mask: 'lines', linesClass: 'line', tag: 'span', aria: 'none', autoSplit: true,
         onSplit: function (self) {
-          return gsap.from(self.lines, {
+          return reveal(self.lines, {
             yPercent: 100, opacity: 0, duration: 1, ease: EASE.soft, stagger: 0.08,
             scrollTrigger: once(el, 'top 88%')
           });
@@ -214,7 +241,7 @@
     $$('[data-reveal="fade"]', root).forEach(fadeUp);
 
     $$('[data-reveal="stagger"]', root).forEach(function (el) {
-      gsap.from(el.children, {
+      reveal(el.children, {
         opacity: 0, y: 24, duration: 0.9, ease: EASE.soft, stagger: 0.1,
         scrollTrigger: once(el, 'top 88%')
       });
@@ -236,13 +263,13 @@
         };
         if (dirs[key].x) vars.x = desktop ? dirs[key].x : dirs[key].x / 2;
         if (dirs[key].y) vars.y = dirs[key].y;
-        gsap.from(el, vars);
+        reveal(el, vars);
       });
     });
 
     /* Líneas que se dibujan. */
     $$('[data-reveal="draw"]', root).forEach(function (el) {
-      gsap.from(el, {
+      reveal(el, {
         scaleX: 0, transformOrigin: 'left center', duration: 1.4, ease: 'power3.inOut',
         scrollTrigger: once(el.closest('.principles') || el, 'top 92%')
       });
@@ -255,7 +282,7 @@
       var inner = $('.slot', el);
       var tl = gsap.timeline({ scrollTrigger: once(el, 'top 84%') });
       tl.fromTo(el, { clipPath: from }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: EASE.wipe, clearProps: 'clipPath' })
-        .from(inner, { scale: 1.22, duration: 1.8, ease: EASE.soft }, 0);
+        .fromTo(inner, { scale: 1.22 }, { scale: 1, duration: 1.8, ease: EASE.soft }, 0);
       /* Experiencias: transición de filtro (blanco y negro → color). */
       if (el.closest('[data-exp]')) {
         tl.fromTo(inner, { filter: 'grayscale(1) brightness(0.72)' },
@@ -267,13 +294,13 @@
     $$('[data-reveal="clip"]', root).forEach(function (el) {
       var tl = gsap.timeline({ scrollTrigger: once(el, 'top 80%') });
       tl.fromTo(el, { clipPath: 'inset(46% 6% 46% 6%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.5, ease: EASE.curtain, clearProps: 'clipPath' })
-        .from($('.slot', el), { scale: 1.3, duration: 2, ease: EASE.soft }, 0)
-        .from($$('[data-reveal="tag"]', el), { opacity: 0, y: 12, duration: 0.6, ease: EASE.soft, stagger: 0.16 }, 1.1);
+        .fromTo($('.slot', el), { scale: 1.3 }, { scale: 1, duration: 2, ease: EASE.soft }, 0)
+        .fromTo($$('[data-reveal="tag"]', el), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6, ease: EASE.soft, stagger: 0.16, clearProps: 'transform' }, 1.1);
     });
 
     /* Pasos: texto desde el lateral y línea de progreso ligada al scroll. */
     $$('[data-reveal="step"]', root).forEach(function (el) {
-      gsap.from(el, {
+      reveal(el, {
         opacity: 0, x: desktop ? 40 : 0, y: desktop ? 0 : 20, duration: 0.9, ease: EASE.soft,
         scrollTrigger: once(el, 'top 88%')
       });
@@ -299,7 +326,7 @@
     /* Sello de marca: gira con el scroll (no gira solo). */
     var seal = $('[data-seal]', root);
     if (seal) {
-      gsap.from(seal, { opacity: 0, scale: 0.8, duration: 1.1, ease: EASE.reveal, scrollTrigger: once(seal, 'top 92%') });
+      reveal(seal, { opacity: 0, scale: 0.8, duration: 1.1, ease: EASE.reveal, clearProps: false, scrollTrigger: once(seal, 'top 92%') });
       gsap.fromTo(seal, { rotation: -25 }, {
         rotation: 70, ease: 'none',
         scrollTrigger: { trigger: root, start: 'top bottom', end: 'bottom top', scrub: true }
@@ -309,7 +336,7 @@
     /* Especialidades: entrada escalonada y texto desplazado por el scroll. */
     $$('.dish', root).forEach(function (dish) {
       var text = $('[data-scrub-text]', dish);
-      gsap.from(text.children, {
+      reveal(text.children, {
         opacity: 0, y: 28, duration: 0.9, ease: EASE.soft, stagger: 0.08,
         scrollTrigger: once(dish, 'top 72%')
       });
@@ -324,7 +351,7 @@
     /* Carta: pestañas y primer panel. */
     var tabs = $('[data-menu-tabs]', root);
     if (tabs) {
-      gsap.from($$('.menu__tab', tabs), {
+      reveal($$('.menu__tab', tabs), {
         opacity: 0, y: 12, duration: 0.7, ease: EASE.soft, stagger: 0.05,
         scrollTrigger: once(tabs, 'top 90%')
       });
@@ -356,7 +383,7 @@
     /* Galería: las primeras piezas entran en horizontal. */
     var glist = $('[data-gallery-list]', root);
     if (glist) {
-      gsap.from(gsap.utils.toArray(glist.children).slice(0, 4), {
+      reveal(gsap.utils.toArray(glist.children).slice(0, 4), {
         opacity: 0, x: desktop ? 140 : 60, duration: 1.3, ease: EASE.reveal, stagger: 0.09,
         scrollTrigger: once(glist, 'top 86%')
       });
@@ -364,7 +391,7 @@
 
     /* Experiencias: texto escalonado (las imágenes usan la máscara). */
     $$('[data-exp]', root).forEach(function (el, i) {
-      gsap.from($$(':scope > :not(.exp__figure)', el), {
+      reveal($$(':scope > :not(.exp__figure)', el), {
         opacity: 0, y: 22, duration: 0.9, ease: EASE.soft, stagger: 0.07,
         delay: desktop ? i * 0.12 : 0,
         scrollTrigger: once(desktop ? el.parentNode : el, 'top 80%')
@@ -375,7 +402,7 @@
        el tabulado no se salte campos aún no revelados). */
     var form = $('.form', root);
     if (form) {
-      gsap.from($$(':scope > .field, :scope > .field-row, :scope > .form__submit', form), {
+      reveal($$(':scope > .field, :scope > .field-row, :scope > .form__submit', form), {
         opacity: 0, y: 20, duration: 0.8, ease: EASE.soft, stagger: 0.07,
         scrollTrigger: once(form, 'top 86%')
       });
@@ -384,12 +411,12 @@
     /* Footer: logotipo. */
     var flogo = $('.footer__logo', root);
     if (flogo) {
-      gsap.from(flogo, { yPercent: 30, opacity: 0, duration: 1.3, ease: EASE.reveal, scrollTrigger: once(flogo, 'top 95%') });
+      reveal(flogo, { yPercent: 30, opacity: 0, duration: 1.3, ease: EASE.reveal, scrollTrigger: once(flogo, 'top 95%') });
     }
   }
 
   function fadeUp(el) {
-    gsap.from(el, { opacity: 0, y: 16, duration: 0.9, ease: EASE.soft, scrollTrigger: once(el, 'top 90%') });
+    reveal(el, { opacity: 0, y: 16, duration: 0.9, ease: EASE.soft, scrollTrigger: once(el, 'top 90%') });
   }
 
   /* ========================================================== CARTA */
@@ -520,7 +547,7 @@
     function end() {
       if (ended) return;
       ended = true;
-      html.classList.remove('has-intro');
+      html.classList.remove('has-intro', 'intro-static');
       rememberIntro();
       removeSkipListeners();
       gsap.set([intro, inner], { clearProps: 'all' });
@@ -573,6 +600,11 @@
       .to(intro, { yPercent: -100, duration: 1, ease: EASE.curtain }, 'reveal')
       .to(inner, { yPercent: 40, autoAlpha: 0, duration: 0.9, ease: EASE.curtain }, 'reveal')
       .add(playHero, 'reveal+=0.12');
+    /* El logotipo ya se mostró estático mientras cargaba el JS: directo al telón. */
+    if (html.classList.contains('intro-static')) {
+      tl.seek('reveal');
+      html.classList.remove('intro-static');
+    }
     addSkipListeners();
   }
 

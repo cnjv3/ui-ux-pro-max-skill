@@ -136,7 +136,7 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--nav-h) + 0.5rem);
+  scroll-padding-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 0.5rem);
   scrollbar-gutter: stable;
   background: var(--charcoal);
 }
@@ -332,7 +332,7 @@ main:focus { outline: none; }
   text-align: center;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
-  transition: color 0.4s var(--ease-out), border-color 0.4s var(--ease-out), transform var(--t-fast) var(--ease-out), opacity var(--t-fast);
+  transition: color 0.4s var(--ease-out), border-color 0.4s var(--ease-out), transform var(--t-fast) var(--ease-out);
 }
 .btn::before {
   content: '';
@@ -397,7 +397,7 @@ main:focus { outline: none; }
   background: transparent;
   color: var(--fg);
   -webkit-tap-highlight-color: transparent;
-  transition: background-color 0.35s var(--ease-out), color 0.35s var(--ease-out), border-color 0.35s, transform var(--t-fast), opacity var(--t-fast);
+  transition: background-color 0.35s var(--ease-out), color 0.35s var(--ease-out), border-color 0.35s, transform var(--t-fast);
 }
 .icon-btn svg { width: 1.25rem; height: 1.25rem; }
 @media (hover: hover) and (pointer: fine) {
@@ -575,6 +575,10 @@ main:focus { outline: none; }
 .motion.has-intro .intro__line { transform: scaleX(0); }
 .motion.has-intro .intro__desc,
 .motion.has-intro .intro__skip { opacity: 0; }
+.motion.has-intro.intro-static .intro__char { transform: none; }
+.motion.has-intro.intro-static .intro__line { transform: none; }
+.motion.has-intro.intro-static .intro__desc,
+.motion.has-intro.intro-static .intro__skip { opacity: 1; }
 
 /* ============================================================ NAVEGACIÓN */
 .nav {
@@ -596,6 +600,7 @@ main:focus { outline: none; }
 .nav.is-solid::before { opacity: 1; }
 .nav.is-hidden { transform: translateY(-101%); }
 .menu-open .nav::before { opacity: 0; }
+.menu-open .nav__bar { background: var(--charcoal); }
 
 .nav__bar {
   position: relative;
@@ -611,6 +616,9 @@ main:focus { outline: none; }
   box-sizing: content-box;
 }
 .nav__logo {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
   margin-right: auto;
   padding: 0.5rem 0;
   font-family: var(--font-serif);
@@ -835,6 +843,17 @@ main:focus { outline: none; }
   .hero__actions .btn { flex: 1 1 100%; }
   .hero__scroll { display: none; }
 }
+@media (max-height: 520px) and (min-aspect-ratio: 4/3) {
+  .hero { padding-top: calc(var(--nav-h) + 1rem); padding-bottom: 1.25rem; }
+  .hero__brand { margin-bottom: 0.75rem; }
+  .hero__title { font-size: clamp(2.25rem, 12vh, 3.25rem); max-width: none; }
+  .hero__lead { max-width: 44rem; margin-top: 0.75rem; font-size: 0.9375rem; }
+  .hero__actions { margin-top: 1rem; }
+  .hero__actions .btn { flex: 0 0 auto; }
+  .hero__scroll { display: none; }
+  .mmenu__inner { gap: 1.5rem; padding-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 0.75rem); }
+  .mmenu__list a { font-size: 1.75rem; padding: 0.45rem 0; }
+}
 @media (min-width: 900px) {
   .hero { align-items: end; }
   .hero__lead { margin-left: auto; margin-right: 0; }
@@ -978,7 +997,7 @@ main:focus { outline: none; }
 /* ================================================================ CARTA */
 .menu__tabs-wrap {
   position: sticky;
-  top: 0;
+  top: env(safe-area-inset-top, 0px);
   z-index: 5;
   margin-inline: calc(var(--gutter) * -1);
   padding-inline: var(--gutter);
@@ -986,7 +1005,7 @@ main:focus { outline: none; }
   border-bottom: 1px solid var(--line);
   transition: top 0.55s var(--ease-out);
 }
-html.nav-visible .menu__tabs-wrap { top: var(--nav-h); }
+html.nav-visible .menu__tabs-wrap { top: calc(var(--nav-h) + env(safe-area-inset-top, 0px)); }
 .menu__tabs {
   position: relative;
   display: flex;
@@ -1075,6 +1094,11 @@ html.nav-visible .menu__tabs-wrap { top: var(--nav-h); }
 .menu-item--thumb { grid-template-columns: 4.5rem minmax(0, 1fr); }
 .menu-item__thumb { width: 4.5rem; aspect-ratio: 1; overflow: hidden; background: var(--charcoal-2); }
 .menu-item__head { display: flex; align-items: baseline; gap: 0.75rem; }
+@media (max-width: 380px) {
+  .menu-item__head { flex-wrap: wrap; gap: 0.25rem 0.75rem; }
+  .menu-item__name { flex: 1 1 100%; }
+  .menu-item__leader { display: none; }
+}
 .menu-item__name {
   font-family: var(--font-serif);
   font-size: clamp(1.375rem, 1.25rem + 0.5vw, 1.75rem);
@@ -1210,7 +1234,8 @@ html.nav-visible .menu__tabs-wrap { top: var(--nav-h); }
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
-  scroll-padding-inline: max(var(--gutter), calc((100vw - var(--maxw)) / 2 + var(--gutter)));
+  scroll-padding-left: max(var(--gutter), env(safe-area-inset-left, 0px), calc((100vw - var(--maxw)) / 2 + var(--gutter)));
+  scroll-padding-right: max(var(--gutter), env(safe-area-inset-right, 0px), calc((100vw - var(--maxw)) / 2 + var(--gutter)));
   scrollbar-width: none;
   overscroll-behavior-x: contain;
   -webkit-overflow-scrolling: touch;
@@ -1225,7 +1250,8 @@ html.nav-visible .menu__tabs-wrap { top: var(--nav-h); }
   align-items: flex-start;
   gap: clamp(1rem, 0.6rem + 2vw, 2.25rem);
   width: max-content;
-  padding-inline: max(var(--gutter), calc((100vw - var(--maxw)) / 2 + var(--gutter)));
+  padding-left: max(var(--gutter), env(safe-area-inset-left, 0px), calc((100vw - var(--maxw)) / 2 + var(--gutter)));
+  padding-right: max(var(--gutter), env(safe-area-inset-right, 0px), calc((100vw - var(--maxw)) / 2 + var(--gutter)));
   padding-bottom: 0.5rem;
 }
 .gallery__item { flex: none; scroll-snap-align: start; }
@@ -1483,7 +1509,7 @@ html.nav-visible .menu__tabs-wrap { top: var(--nav-h); }
 .contact__list { display: grid; gap: 0.35rem; }
 .contact__list li { display: grid; gap: 0.1rem; }
 .contact__list .k { font-size: 0.8125rem; color: var(--muted); }
-.contact__list a { font-family: var(--font-serif); font-size: 1.5rem; font-variant-numeric: lining-nums; text-decoration: none; background: linear-gradient(currentColor, currentColor) left bottom / 0 1px no-repeat; transition: background-size 0.5s var(--ease-out); justify-self: start; }
+.contact__list a { display: inline-flex; align-items: center; min-height: 2.75rem; font-family: var(--font-serif); font-size: 1.5rem; font-variant-numeric: lining-nums; text-decoration: none; background: linear-gradient(currentColor, currentColor) left bottom / 0 1px no-repeat; transition: background-size 0.5s var(--ease-out); justify-self: start; }
 .contact__list a:hover, .contact__list a:focus-visible { background-size: 100% 1px; }
 .contact__list .v-pending { font-family: var(--font-serif); font-size: 1.5rem; font-style: italic; color: var(--gray-ink); }
 .contact__map { grid-column: 1 / -1; aspect-ratio: 16 / 7; border: 1px solid var(--line); }
@@ -1518,17 +1544,19 @@ html.nav-visible .menu__tabs-wrap { top: var(--nav-h); }
 .footer__rule { display: block; height: 1px; margin-block: clamp(2.5rem, 2rem + 2vw, 4rem); background: linear-gradient(90deg, var(--gold), rgba(184, 155, 101, 0.15)); transform-origin: left; }
 .footer__grid { display: grid; gap: 2.5rem; }
 .footer__label { margin-bottom: 1rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); }
-.footer__nav { display: grid; gap: 0.15rem; }
+.footer__nav { display: grid; gap: 0; }
 .footer__nav a, .footer__contact a {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
   padding-block: 0.4rem;
   text-decoration: none;
   color: rgba(243, 239, 229, 0.85);
   transition: color var(--t-fast);
 }
 .footer__nav a:hover, .footer__contact a:hover { color: var(--gold); }
-.footer__contact { display: grid; gap: 0.15rem; color: var(--gray-light); }
-.footer__contact li { padding-block: 0.4rem; }
+.footer__contact { display: grid; gap: 0; color: var(--gray-light); }
+.footer__contact li { padding-block: 0.65rem; }
 .footer__contact li:has(a) { padding-block: 0; }
 .footer__bottom {
   display: flex;
@@ -1599,13 +1627,19 @@ html.nav-visible .menu__tabs-wrap { top: var(--nav-h); }
 .wa-float:active { transform: scale(0.95); }
 
 .noscript {
-  position: fixed;
-  left: 1rem; right: 1rem; bottom: 1rem;
-  z-index: 300;
-  padding: 1rem;
+  padding: calc(var(--nav-h) + 1.5rem) max(var(--gutter), env(safe-area-inset-right, 0px)) 1.5rem max(var(--gutter), env(safe-area-inset-left, 0px));
   background: var(--ivory);
   color: var(--charcoal);
-  font-weight: 600;
+}
+.noscript p { max-width: 60ch; }
+.noscript a { font-weight: 700; }
+.no-js .nav { position: absolute; }
+.no-js .nav__toggle, .no-js .gallery__controls, .no-js .stepper__btn,
+.no-js .reserve__panel, .no-js .menu__tabs-wrap, .no-js .menu__note { display: none; }
+@media (max-width: 899px) {
+  .no-js .nav__bar { flex-wrap: wrap; height: auto; padding-block: 0.75rem; }
+  .no-js .nav__links { display: block; flex-basis: 100%; }
+  .no-js .nav__links ul { flex-wrap: wrap; gap: 0 1.25rem; }
 }
 
 /* Movimiento: will-change solo en elementos que realmente se animan */
@@ -1646,6 +1680,10 @@ html.nav-visible .menu__tabs-wrap { top: var(--nav-h); }
       if (w.location.hash.length > 1) intro = false; /* enlace profundo: directo al contenido */
       if (motion) h.classList.add('motion');
       if (intro) h.classList.add('has-intro');
+      /* Carga lenta: si el JS aún no llegó, el logotipo de la intro se ve estático. */
+      if (intro) w.setTimeout(function () {
+        if (!h.classList.contains('motion-ready')) h.classList.add('intro-static');
+      }, 1200);
       /* Red de seguridad: si el sistema de movimiento no arranca, todo queda visible. */
       w.__veranoFailsafe = w.setTimeout(function () {
         if (!h.classList.contains('motion-ready')) {
@@ -1732,6 +1770,16 @@ html.nav-visible .menu__tabs-wrap { top: var(--nav-h); }
   </header>
 
   <main id="contenido" tabindex="-1">
+    <noscript>
+      <div class="noscript">
+        <p><strong>La carta interactiva, la galería y el formulario de reservas necesitan JavaScript.</strong>
+          Actívalo para verlos o escríbenos directamente:
+          <a href="https://wa.me/56900000000">WhatsApp +56&nbsp;9&nbsp;0000&nbsp;0000</a> ·
+          <a href="tel:+56900000000">Tel. +56&nbsp;9&nbsp;0000&nbsp;0000</a>.
+          <!-- PENDIENTE: mismo número que contact.whatsapp y contact.phone en js/config.js -->
+        </p>
+      </div>
+    </noscript>
     <!-- =============================== HERO ============================== -->
     <section class="hero" id="inicio" aria-labelledby="hero-title" data-section="dark">
       <div class="hero__media" data-hero-media>
@@ -2140,9 +2188,6 @@ html.nav-visible .menu__tabs-wrap { top: var(--nav-h); }
     </div>
   </dialog>
 
-  <noscript>
-    <p class="noscript">Para ver la carta y usar el formulario de reservas, activa JavaScript o escríbenos directamente por WhatsApp.</p>
-  </noscript>
 
   <script>
 /*!
@@ -2902,7 +2947,8 @@ window.VERANO_CONFIG = {
       /* Si el usuario estaba más abajo en una lista larga, vuelve al inicio del panel. */
       var wrap = $('[data-menu-tabs-wrap]');
       var stageTop = $('[data-menu-stage]').getBoundingClientRect().top;
-      var offset = wrap.offsetHeight + (html.classList.contains('nav-visible') ? navHeight() : 0);
+      /* Al subir, la navegación reaparece: se cuenta siempre su altura. */
+      var offset = wrap.offsetHeight + navHeight();
       if (stageTop < offset - 4) {
         window.scrollTo({
           top: window.pageYOffset + stageTop - offset - 8,
@@ -3208,17 +3254,22 @@ window.VERANO_CONFIG = {
   var nav = $('[data-nav]');
   var hero = $('#inicio');
   var heroH = 0, lastY = 0, navTicking = false;
+  /* La llegada a un ancla (enlace profundo, recarga) también desplaza la
+     página: la navegación solo se oculta tras un gesto del propio usuario. */
+  var userScrolled = false;
 
   function navHeight() { return nav ? $('.nav__bar', nav).offsetHeight : 0; }
 
   function updateNav() {
     navTicking = false;
     var y = window.pageYOffset;
-    var solid = y > heroH - navHeight() - 1;
+    /* Transparente solo en reposo sobre la portada: en cuanto el texto del
+       hero empieza a pasar por debajo, la barra se vuelve sólida. */
+    var solid = y > 24;
     nav.classList.toggle('is-solid', solid);
     var menuOpen = html.classList.contains('menu-open');
     var focusInside = nav.contains(document.activeElement) && document.activeElement !== document.body;
-    if (!menuOpen && !focusInside && y > heroH && y > lastY + 6) nav.classList.add('is-hidden');
+    if (userScrolled && !menuOpen && !focusInside && y > heroH && y > lastY + 6) nav.classList.add('is-hidden');
     else if (y < lastY - 6 || y <= heroH || menuOpen || focusInside) nav.classList.remove('is-hidden');
     html.classList.toggle('nav-visible', !nav.classList.contains('is-hidden'));
     if (Math.abs(y - lastY) > 6) lastY = y;
@@ -3231,7 +3282,17 @@ window.VERANO_CONFIG = {
     }, { passive: true });
     window.addEventListener('resize', debounce(function () { heroH = hero ? hero.offsetHeight : 0; updateNav(); }, 150));
     nav.addEventListener('focusin', function () { nav.classList.remove('is-hidden'); html.classList.add('nav-visible'); });
-    requestAnimationFrame(function () { heroH = hero ? hero.offsetHeight : 0; updateNav(); });
+    var arm = function () { userScrolled = true; };
+    ['wheel', 'touchmove', 'keydown', 'pointerdown'].forEach(function (t) {
+      window.addEventListener(t, arm, { passive: true, once: true });
+    });
+    requestAnimationFrame(function () {
+      heroH = hero ? hero.offsetHeight : 0;
+      /* Con enlace profundo o recarga a mitad de página no hubo desplazamiento
+         hacia abajo: la navegación debe verse. */
+      lastY = window.pageYOffset;
+      updateNav();
+    });
 
     /* Enlace activo según la sección visible */
     var links = $$('[data-nav-link]');
@@ -3314,18 +3375,62 @@ window.VERANO_CONFIG = {
   }
 
   /* ----------------------------------------------------- WhatsApp flotante */
-  var floatState = { blockers: {}, pastHero: false, el: null };
+  /* Visible solo cuando ayuda: fuera de la portada (ya tiene sus CTA) y nunca
+     sobre reservas, contacto, footer o la lista de la carta, ni encima de un
+     control que quede debajo (p. ej. «Imagen siguiente» de la galería). */
+  var floatState = { blockers: [], pastHero: false, conflict: false, el: null, showTimer: 0, lastCheck: 0 };
+  var PROTECTED = 'a[href], button, input, select, textarea, [role="tab"], .menu-item__price';
+
+  function floatAllowed() {
+    return floatState.pastHero &&
+      !floatState.blockers.some(function (b) { return b.on; }) &&
+      !html.classList.contains('menu-open') && !html.classList.contains('lightbox-open') &&
+      !html.classList.contains('has-intro');
+  }
+
+  /* ¿Se solapa el botón (con 4 px de margen) con algún control o precio?
+     Comprobación geométrica: detecta también solapes parciales en los bordes. */
+  var protectedEls = null;
+  function coversControl() {
+    var el = floatState.el;
+    if (!protectedEls) protectedEls = $$(PROTECTED).filter(function (c) { return !el.contains(c); });
+    var r = el.getBoundingClientRect();
+    var m = 4;
+    for (var i = 0; i < protectedEls.length; i++) {
+      var q = protectedEls[i].getBoundingClientRect();
+      if (!q.width || !q.height) continue;
+      if (q.right > r.left - m && q.left < r.right + m && q.bottom > r.top - m && q.top < r.bottom + m) return true;
+    }
+    return false;
+  }
 
   function updateFloat() {
     var el = floatState.el;
     if (!el) return;
-    var blocked = Object.keys(floatState.blockers).some(function (k) { return floatState.blockers[k]; });
-    var show = floatState.pastHero && !blocked &&
-      !html.classList.contains('menu-open') && !html.classList.contains('lightbox-open') &&
-      !html.classList.contains('has-intro');
+    var allowed = floatAllowed();
+    if (allowed) floatState.conflict = coversControl();
+    var show = allowed && !floatState.conflict;
     el.classList.toggle('is-visible', show);
     if (show) el.removeAttribute('tabindex'); else el.setAttribute('tabindex', '-1');
     el.setAttribute('aria-hidden', show ? 'false' : 'true');
+  }
+
+  /* Se oculta en cuanto aparece un control debajo y vuelve tras 250 ms libres,
+     para no parpadear al pasar sobre listas de enlaces. */
+  function checkConflict() {
+    if (!floatState.el || !floatAllowed()) return;
+    if (coversControl()) {
+      clearTimeout(floatState.showTimer);
+      floatState.showTimer = 0;
+      if (!floatState.conflict) { floatState.conflict = true; updateFloat(); }
+    } else if (floatState.conflict && !floatState.showTimer) {
+      floatState.showTimer = setTimeout(function () {
+        floatState.showTimer = 0;
+        if (!coversControl()) { floatState.conflict = false; updateFloat(); }
+      }, 250);
+    } else if (!floatState.el.classList.contains('is-visible')) {
+      updateFloat();
+    }
   }
 
   function initFloat() {
@@ -3334,17 +3439,32 @@ window.VERANO_CONFIG = {
       if (floatState.el) floatState.el.classList.add('is-visible');
       return;
     }
-    /* Se oculta sobre la portada (ya tiene CTA) y donde taparía controles:
-       reservas, contacto y footer. */
     new IntersectionObserver(function (entries) {
       floatState.pastHero = !entries[0].isIntersecting;
       updateFloat();
     }, { rootMargin: '0px 0px -20% 0px' }).observe(hero);
+    ['#reservas', '#contacto', '.footer', '[data-menu-stage]'].forEach(function (sel) {
+      var el = $(sel);
+      if (el) floatState.blockers.push({ el: el, on: false });
+    });
     var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) { floatState.blockers[en.target.id || 'footer'] = en.isIntersecting; });
+      entries.forEach(function (en) {
+        floatState.blockers.forEach(function (b) { if (b.el === en.target) b.on = en.isIntersecting; });
+      });
       updateFloat();
     }, { rootMargin: '0px 0px -10% 0px' });
-    ['#reservas', '#contacto', '.footer'].forEach(function (s) { var el = $(s); if (el) io.observe(el); });
+    floatState.blockers.forEach(function (b) { io.observe(b.el); });
+
+    var settleCheck = debounce(checkConflict, 120);
+    function onScroll() {
+      var now = performance.now();
+      if (now - floatState.lastCheck > 80) { floatState.lastCheck = now; checkConflict(); }
+      settleCheck();
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    var track = $('[data-gallery-track]');
+    if (track) track.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', settleCheck);
     updateFloat();
   }
   V.updateFloat = updateFloat;
@@ -3706,6 +3826,17 @@ window.VERANO_CONFIG = {
     return;
   }
 
+  /* La red de seguridad del <head> ya dejó todo visible (carga muy lenta):
+     no se reocultan contenidos ni se repite la entrada. */
+  if (html.classList.contains('motion-failed')) {
+    html.classList.remove('motion', 'has-intro', 'intro-static');
+    rememberIntro();
+    markReady();
+    V.motion = null;
+    updateFloat();
+    return;
+  }
+
   gsap.registerPlugin(ScrollTrigger);
   if (SplitText) gsap.registerPlugin(SplitText);
   ScrollTrigger.config({ ignoreMobileResize: true });
@@ -3726,6 +3857,22 @@ window.VERANO_CONFIG = {
      girar una tablet), GSAP puede encontrarse un hueco en su lista. */
   function once(trigger, start) {
     return { trigger: trigger, start: start || 'top 85%', toggleActions: 'play none play none' };
+  }
+
+  /* Revelado con valores finales explícitos (fromTo). Con from() GSAP toma
+     como estado final el estilo computado en ese instante, y una transición
+     CSS sobre la misma propiedad (p. ej. opacity en .btn) puede dejar el
+     elemento invisible para siempre. Misma firma que gsap.from(). */
+  var END = { opacity: 1, x: 0, y: 0, xPercent: 0, yPercent: 0, scale: 1, scaleX: 1, scaleY: 1 };
+  function reveal(targets, vars) {
+    var from = {}, to = { clearProps: 'transform' };
+    Object.keys(vars).forEach(function (k) {
+      if (k in END) { from[k] = vars[k]; to[k] = END[k]; }
+      else if (k === 'transformOrigin') from[k] = vars[k];
+      else to[k] = vars[k];
+    });
+    if (to.clearProps === false) delete to.clearProps;
+    return gsap.fromTo(targets, from, to);
   }
 
   /* Tras construir a mitad de página (enlace profundo, recarga, giro de
@@ -3839,7 +3986,7 @@ window.VERANO_CONFIG = {
       SplitText.create(el, {
         type: 'lines', mask: 'lines', linesClass: 'line', tag: 'span', aria: 'none', autoSplit: true,
         onSplit: function (self) {
-          return gsap.from(self.lines, {
+          return reveal(self.lines, {
             yPercent: 110, duration: 1.15, ease: EASE.reveal, stagger: 0.1,
             scrollTrigger: once(el, 'top 86%')
           });
@@ -3853,7 +4000,7 @@ window.VERANO_CONFIG = {
       SplitText.create(el, {
         type: 'lines', mask: 'lines', linesClass: 'line', tag: 'span', aria: 'none', autoSplit: true,
         onSplit: function (self) {
-          return gsap.from(self.lines, {
+          return reveal(self.lines, {
             yPercent: 100, opacity: 0, duration: 1, ease: EASE.soft, stagger: 0.08,
             scrollTrigger: once(el, 'top 88%')
           });
@@ -3864,7 +4011,7 @@ window.VERANO_CONFIG = {
     $$('[data-reveal="fade"]', root).forEach(fadeUp);
 
     $$('[data-reveal="stagger"]', root).forEach(function (el) {
-      gsap.from(el.children, {
+      reveal(el.children, {
         opacity: 0, y: 24, duration: 0.9, ease: EASE.soft, stagger: 0.1,
         scrollTrigger: once(el, 'top 88%')
       });
@@ -3886,13 +4033,13 @@ window.VERANO_CONFIG = {
         };
         if (dirs[key].x) vars.x = desktop ? dirs[key].x : dirs[key].x / 2;
         if (dirs[key].y) vars.y = dirs[key].y;
-        gsap.from(el, vars);
+        reveal(el, vars);
       });
     });
 
     /* Líneas que se dibujan. */
     $$('[data-reveal="draw"]', root).forEach(function (el) {
-      gsap.from(el, {
+      reveal(el, {
         scaleX: 0, transformOrigin: 'left center', duration: 1.4, ease: 'power3.inOut',
         scrollTrigger: once(el.closest('.principles') || el, 'top 92%')
       });
@@ -3905,7 +4052,7 @@ window.VERANO_CONFIG = {
       var inner = $('.slot', el);
       var tl = gsap.timeline({ scrollTrigger: once(el, 'top 84%') });
       tl.fromTo(el, { clipPath: from }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: EASE.wipe, clearProps: 'clipPath' })
-        .from(inner, { scale: 1.22, duration: 1.8, ease: EASE.soft }, 0);
+        .fromTo(inner, { scale: 1.22 }, { scale: 1, duration: 1.8, ease: EASE.soft }, 0);
       /* Experiencias: transición de filtro (blanco y negro → color). */
       if (el.closest('[data-exp]')) {
         tl.fromTo(inner, { filter: 'grayscale(1) brightness(0.72)' },
@@ -3917,13 +4064,13 @@ window.VERANO_CONFIG = {
     $$('[data-reveal="clip"]', root).forEach(function (el) {
       var tl = gsap.timeline({ scrollTrigger: once(el, 'top 80%') });
       tl.fromTo(el, { clipPath: 'inset(46% 6% 46% 6%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.5, ease: EASE.curtain, clearProps: 'clipPath' })
-        .from($('.slot', el), { scale: 1.3, duration: 2, ease: EASE.soft }, 0)
-        .from($$('[data-reveal="tag"]', el), { opacity: 0, y: 12, duration: 0.6, ease: EASE.soft, stagger: 0.16 }, 1.1);
+        .fromTo($('.slot', el), { scale: 1.3 }, { scale: 1, duration: 2, ease: EASE.soft }, 0)
+        .fromTo($$('[data-reveal="tag"]', el), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6, ease: EASE.soft, stagger: 0.16, clearProps: 'transform' }, 1.1);
     });
 
     /* Pasos: texto desde el lateral y línea de progreso ligada al scroll. */
     $$('[data-reveal="step"]', root).forEach(function (el) {
-      gsap.from(el, {
+      reveal(el, {
         opacity: 0, x: desktop ? 40 : 0, y: desktop ? 0 : 20, duration: 0.9, ease: EASE.soft,
         scrollTrigger: once(el, 'top 88%')
       });
@@ -3949,7 +4096,7 @@ window.VERANO_CONFIG = {
     /* Sello de marca: gira con el scroll (no gira solo). */
     var seal = $('[data-seal]', root);
     if (seal) {
-      gsap.from(seal, { opacity: 0, scale: 0.8, duration: 1.1, ease: EASE.reveal, scrollTrigger: once(seal, 'top 92%') });
+      reveal(seal, { opacity: 0, scale: 0.8, duration: 1.1, ease: EASE.reveal, clearProps: false, scrollTrigger: once(seal, 'top 92%') });
       gsap.fromTo(seal, { rotation: -25 }, {
         rotation: 70, ease: 'none',
         scrollTrigger: { trigger: root, start: 'top bottom', end: 'bottom top', scrub: true }
@@ -3959,7 +4106,7 @@ window.VERANO_CONFIG = {
     /* Especialidades: entrada escalonada y texto desplazado por el scroll. */
     $$('.dish', root).forEach(function (dish) {
       var text = $('[data-scrub-text]', dish);
-      gsap.from(text.children, {
+      reveal(text.children, {
         opacity: 0, y: 28, duration: 0.9, ease: EASE.soft, stagger: 0.08,
         scrollTrigger: once(dish, 'top 72%')
       });
@@ -3974,7 +4121,7 @@ window.VERANO_CONFIG = {
     /* Carta: pestañas y primer panel. */
     var tabs = $('[data-menu-tabs]', root);
     if (tabs) {
-      gsap.from($$('.menu__tab', tabs), {
+      reveal($$('.menu__tab', tabs), {
         opacity: 0, y: 12, duration: 0.7, ease: EASE.soft, stagger: 0.05,
         scrollTrigger: once(tabs, 'top 90%')
       });
@@ -4006,7 +4153,7 @@ window.VERANO_CONFIG = {
     /* Galería: las primeras piezas entran en horizontal. */
     var glist = $('[data-gallery-list]', root);
     if (glist) {
-      gsap.from(gsap.utils.toArray(glist.children).slice(0, 4), {
+      reveal(gsap.utils.toArray(glist.children).slice(0, 4), {
         opacity: 0, x: desktop ? 140 : 60, duration: 1.3, ease: EASE.reveal, stagger: 0.09,
         scrollTrigger: once(glist, 'top 86%')
       });
@@ -4014,7 +4161,7 @@ window.VERANO_CONFIG = {
 
     /* Experiencias: texto escalonado (las imágenes usan la máscara). */
     $$('[data-exp]', root).forEach(function (el, i) {
-      gsap.from($$(':scope > :not(.exp__figure)', el), {
+      reveal($$(':scope > :not(.exp__figure)', el), {
         opacity: 0, y: 22, duration: 0.9, ease: EASE.soft, stagger: 0.07,
         delay: desktop ? i * 0.12 : 0,
         scrollTrigger: once(desktop ? el.parentNode : el, 'top 80%')
@@ -4025,7 +4172,7 @@ window.VERANO_CONFIG = {
        el tabulado no se salte campos aún no revelados). */
     var form = $('.form', root);
     if (form) {
-      gsap.from($$(':scope > .field, :scope > .field-row, :scope > .form__submit', form), {
+      reveal($$(':scope > .field, :scope > .field-row, :scope > .form__submit', form), {
         opacity: 0, y: 20, duration: 0.8, ease: EASE.soft, stagger: 0.07,
         scrollTrigger: once(form, 'top 86%')
       });
@@ -4034,12 +4181,12 @@ window.VERANO_CONFIG = {
     /* Footer: logotipo. */
     var flogo = $('.footer__logo', root);
     if (flogo) {
-      gsap.from(flogo, { yPercent: 30, opacity: 0, duration: 1.3, ease: EASE.reveal, scrollTrigger: once(flogo, 'top 95%') });
+      reveal(flogo, { yPercent: 30, opacity: 0, duration: 1.3, ease: EASE.reveal, scrollTrigger: once(flogo, 'top 95%') });
     }
   }
 
   function fadeUp(el) {
-    gsap.from(el, { opacity: 0, y: 16, duration: 0.9, ease: EASE.soft, scrollTrigger: once(el, 'top 90%') });
+    reveal(el, { opacity: 0, y: 16, duration: 0.9, ease: EASE.soft, scrollTrigger: once(el, 'top 90%') });
   }
 
   /* ========================================================== CARTA */
@@ -4170,7 +4317,7 @@ window.VERANO_CONFIG = {
     function end() {
       if (ended) return;
       ended = true;
-      html.classList.remove('has-intro');
+      html.classList.remove('has-intro', 'intro-static');
       rememberIntro();
       removeSkipListeners();
       gsap.set([intro, inner], { clearProps: 'all' });
@@ -4223,6 +4370,11 @@ window.VERANO_CONFIG = {
       .to(intro, { yPercent: -100, duration: 1, ease: EASE.curtain }, 'reveal')
       .to(inner, { yPercent: 40, autoAlpha: 0, duration: 0.9, ease: EASE.curtain }, 'reveal')
       .add(playHero, 'reveal+=0.12');
+    /* El logotipo ya se mostró estático mientras cargaba el JS: directo al telón. */
+    if (html.classList.contains('intro-static')) {
+      tl.seek('reveal');
+      html.classList.remove('intro-static');
+    }
     addSkipListeners();
   }
 

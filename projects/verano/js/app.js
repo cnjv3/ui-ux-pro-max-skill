@@ -325,7 +325,8 @@
       /* Si el usuario estaba más abajo en una lista larga, vuelve al inicio del panel. */
       var wrap = $('[data-menu-tabs-wrap]');
       var stageTop = $('[data-menu-stage]').getBoundingClientRect().top;
-      var offset = wrap.offsetHeight + (html.classList.contains('nav-visible') ? navHeight() : 0);
+      /* Al subir, la navegación reaparece: se cuenta siempre su altura. */
+      var offset = wrap.offsetHeight + navHeight();
       if (stageTop < offset - 4) {
         window.scrollTo({
           top: window.pageYOffset + stageTop - offset - 8,
@@ -631,17 +632,22 @@
   var nav = $('[data-nav]');
   var hero = $('#inicio');
   var heroH = 0, lastY = 0, navTicking = false;
+  /* La llegada a un ancla (enlace profundo, recarga) también desplaza la
+     página: la navegación solo se oculta tras un gesto del propio usuario. */
+  var userScrolled = false;
 
   function navHeight() { return nav ? $('.nav__bar', nav).offsetHeight : 0; }
 
   function updateNav() {
     navTicking = false;
     var y = window.pageYOffset;
-    var solid = y > heroH - navHeight() - 1;
+    /* Transparente solo en reposo sobre la portada: en cuanto el texto del
+       hero empieza a pasar por debajo, la barra se vuelve sólida. */
+    var solid = y > 24;
     nav.classList.toggle('is-solid', solid);
     var menuOpen = html.classList.contains('menu-open');
     var focusInside = nav.contains(document.activeElement) && document.activeElement !== document.body;
-    if (!menuOpen && !focusInside && y > heroH && y > lastY + 6) nav.classList.add('is-hidden');
+    if (userScrolled && !menuOpen && !focusInside && y > heroH && y > lastY + 6) nav.classList.add('is-hidden');
     else if (y < lastY - 6 || y <= heroH || menuOpen || focusInside) nav.classList.remove('is-hidden');
     html.classList.toggle('nav-visible', !nav.classList.contains('is-hidden'));
     if (Math.abs(y - lastY) > 6) lastY = y;
@@ -654,7 +660,17 @@
     }, { passive: true });
     window.addEventListener('resize', debounce(function () { heroH = hero ? hero.offsetHeight : 0; updateNav(); }, 150));
     nav.addEventListener('focusin', function () { nav.classList.remove('is-hidden'); html.classList.add('nav-visible'); });
-    requestAnimationFrame(function () { heroH = hero ? hero.offsetHeight : 0; updateNav(); });
+    var arm = function () { userScrolled = true; };
+    ['wheel', 'touchmove', 'keydown', 'pointerdown'].forEach(function (t) {
+      window.addEventListener(t, arm, { passive: true, once: true });
+    });
+    requestAnimationFrame(function () {
+      heroH = hero ? hero.offsetHeight : 0;
+      /* Con enlace profundo o recarga a mitad de página no hubo desplazamiento
+         hacia abajo: la navegación debe verse. */
+      lastY = window.pageYOffset;
+      updateNav();
+    });
 
     /* Enlace activo según la sección visible */
     var links = $$('[data-nav-link]');
@@ -737,18 +753,62 @@
   }
 
   /* ----------------------------------------------------- WhatsApp flotante */
-  var floatState = { blockers: {}, pastHero: false, el: null };
+  /* Visible solo cuando ayuda: fuera de la portada (ya tiene sus CTA) y nunca
+     sobre reservas, contacto, footer o la lista de la carta, ni encima de un
+     control que quede debajo (p. ej. «Imagen siguiente» de la galería). */
+  var floatState = { blockers: [], pastHero: false, conflict: false, el: null, showTimer: 0, lastCheck: 0 };
+  var PROTECTED = 'a[href], button, input, select, textarea, [role="tab"], .menu-item__price';
+
+  function floatAllowed() {
+    return floatState.pastHero &&
+      !floatState.blockers.some(function (b) { return b.on; }) &&
+      !html.classList.contains('menu-open') && !html.classList.contains('lightbox-open') &&
+      !html.classList.contains('has-intro');
+  }
+
+  /* ¿Se solapa el botón (con 4 px de margen) con algún control o precio?
+     Comprobación geométrica: detecta también solapes parciales en los bordes. */
+  var protectedEls = null;
+  function coversControl() {
+    var el = floatState.el;
+    if (!protectedEls) protectedEls = $$(PROTECTED).filter(function (c) { return !el.contains(c); });
+    var r = el.getBoundingClientRect();
+    var m = 4;
+    for (var i = 0; i < protectedEls.length; i++) {
+      var q = protectedEls[i].getBoundingClientRect();
+      if (!q.width || !q.height) continue;
+      if (q.right > r.left - m && q.left < r.right + m && q.bottom > r.top - m && q.top < r.bottom + m) return true;
+    }
+    return false;
+  }
 
   function updateFloat() {
     var el = floatState.el;
     if (!el) return;
-    var blocked = Object.keys(floatState.blockers).some(function (k) { return floatState.blockers[k]; });
-    var show = floatState.pastHero && !blocked &&
-      !html.classList.contains('menu-open') && !html.classList.contains('lightbox-open') &&
-      !html.classList.contains('has-intro');
+    var allowed = floatAllowed();
+    if (allowed) floatState.conflict = coversControl();
+    var show = allowed && !floatState.conflict;
     el.classList.toggle('is-visible', show);
     if (show) el.removeAttribute('tabindex'); else el.setAttribute('tabindex', '-1');
     el.setAttribute('aria-hidden', show ? 'false' : 'true');
+  }
+
+  /* Se oculta en cuanto aparece un control debajo y vuelve tras 250 ms libres,
+     para no parpadear al pasar sobre listas de enlaces. */
+  function checkConflict() {
+    if (!floatState.el || !floatAllowed()) return;
+    if (coversControl()) {
+      clearTimeout(floatState.showTimer);
+      floatState.showTimer = 0;
+      if (!floatState.conflict) { floatState.conflict = true; updateFloat(); }
+    } else if (floatState.conflict && !floatState.showTimer) {
+      floatState.showTimer = setTimeout(function () {
+        floatState.showTimer = 0;
+        if (!coversControl()) { floatState.conflict = false; updateFloat(); }
+      }, 250);
+    } else if (!floatState.el.classList.contains('is-visible')) {
+      updateFloat();
+    }
   }
 
   function initFloat() {
@@ -757,17 +817,32 @@
       if (floatState.el) floatState.el.classList.add('is-visible');
       return;
     }
-    /* Se oculta sobre la portada (ya tiene CTA) y donde taparía controles:
-       reservas, contacto y footer. */
     new IntersectionObserver(function (entries) {
       floatState.pastHero = !entries[0].isIntersecting;
       updateFloat();
     }, { rootMargin: '0px 0px -20% 0px' }).observe(hero);
+    ['#reservas', '#contacto', '.footer', '[data-menu-stage]'].forEach(function (sel) {
+      var el = $(sel);
+      if (el) floatState.blockers.push({ el: el, on: false });
+    });
     var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) { floatState.blockers[en.target.id || 'footer'] = en.isIntersecting; });
+      entries.forEach(function (en) {
+        floatState.blockers.forEach(function (b) { if (b.el === en.target) b.on = en.isIntersecting; });
+      });
       updateFloat();
     }, { rootMargin: '0px 0px -10% 0px' });
-    ['#reservas', '#contacto', '.footer'].forEach(function (s) { var el = $(s); if (el) io.observe(el); });
+    floatState.blockers.forEach(function (b) { io.observe(b.el); });
+
+    var settleCheck = debounce(checkConflict, 120);
+    function onScroll() {
+      var now = performance.now();
+      if (now - floatState.lastCheck > 80) { floatState.lastCheck = now; checkConflict(); }
+      settleCheck();
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    var track = $('[data-gallery-track]');
+    if (track) track.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', settleCheck);
     updateFloat();
   }
   V.updateFloat = updateFloat;
