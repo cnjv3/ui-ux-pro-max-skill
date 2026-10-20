@@ -28,7 +28,8 @@
        movimiento y si se muestra la introducción. */
     (function (d, w) {
       var h = d.documentElement, intro = true, motion = true;
-      h.className = h.className.replace('no-js', 'js');
+      h.classList.remove('no-js');
+      h.classList.add('js');
       /* Fuentes autoalojadas: la precarga solo se usa en http(s); al abrir el
          archivo directamente (file://) Chrome rechaza las precargas con
          crossorigin, pero sí carga las @font-face normales. */
