@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>NOIR® Studio</title>
+  <meta name="description" content="NOIR® designs and builds immersive digital experiences for visionary brands, combining art, technology and strategy.">
+  <meta name="theme-color" content="#050505">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..400&family=Hanken+Grotesk:wght@400;500&family=Newsreader:opsz,wght@6..72,300&family=Raleway:wght@200;300&display=swap">
+  <link rel="stylesheet" href="noir-hero.css">
+  <script>document.documentElement.classList.add('noir-js');</script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/",
+        "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.15.0/index.js"
+      }
+    }
+  </script>
+  <script type="module">
+    import { mountNoirHero } from './noir-hero.js';
+    mountNoirHero(document.querySelector('[data-noir-hero]'));
+  </script>
+</head>
+<body class="noir-page">
+  <!--
+    NOIR® hero component. The outer track gives the pinned hero a short scroll
+    distance so scrolling can steer the scene; set --noir-track on it to change
+    that distance, or to 100svh to disable it.
+  -->
+  <div class="noir-track" data-noir-hero data-quality="auto">
+    <section class="noir-hero" aria-labelledby="noir-title">
+      <div class="noir-hero__scene" role="img" aria-label="A liquid chrome sculpture floating above dark, rippling water between wet black rocks">
+        <canvas class="noir-hero__canvas" data-noir="canvas"></canvas>
+        <img class="noir-hero__poster" data-noir="poster" data-src="poster.jpg" alt="" width="1920" height="1080" decoding="async" hidden>
+        <noscript><img class="noir-hero__poster" src="poster.jpg" alt="" width="1920" height="1080"></noscript>
+      </div>
+      <div class="noir-hero__veil" aria-hidden="true"></div>
+      <div class="noir-hero__focus" data-noir="focus" aria-hidden="true"></div>
+
+      <header class="noir-hero__header">
+        <a class="noir-logo" href="#top" aria-label="NOIR, home" data-intro="nav">NOIR<span class="noir-logo__mark" aria-hidden="true">®</span></a>
+        <nav class="noir-nav" aria-label="Primary">
+          <ul class="noir-nav__list">
+            <li><a class="noir-nav__link" href="#work" data-intro="nav">Work</a></li>
+            <li><a class="noir-nav__link" href="#services" data-intro="nav">Services</a></li>
+            <li><a class="noir-nav__link" href="#studio" data-intro="nav">Studio</a></li>
+            <li><a class="noir-nav__link" href="#contact" data-intro="nav">Contact</a></li>
+          </ul>
+        </nav>
+        <a class="noir-pill" href="#contact" data-intro="nav">
+          <span>Start a project</span>
+          <svg class="noir-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13.5 6.5 19 12l-5.5 5.5"/></svg>
+        </a>
+      </header>
+
+      <div class="noir-hero__content">
+        <div class="noir-hero__intro">
+          <p class="noir-eyebrow">
+            <span class="noir-eyebrow__line" data-intro="eyebrow">Digital experiences</span>
+            <span class="noir-eyebrow__line" data-intro="eyebrow">for a more remarkable world</span>
+          </p>
+          <h1 class="noir-title" id="noir-title">
+            <span class="noir-title__mask"><span class="noir-title__line noir-title__line--sans" data-intro="title">Beyond</span></span>
+            <span class="noir-title__mask"><span class="noir-title__line noir-title__line--serif" data-intro="title">The interface</span></span>
+          </h1>
+        </div>
+        <div class="noir-hero__lede">
+          <p class="noir-body" data-intro="body">We design and build immersive digital experiences <br class="noir-br">for visionary brands, combining art, technology <br class="noir-br">and strategy.</p>
+          <a class="noir-explore" href="#work" data-intro="cta">
+            <span class="noir-explore__label">Explore our work</span>
+            <span class="noir-explore__ring" aria-hidden="true">
+              <svg class="noir-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13.5 6.5 19 12l-5.5 5.5"/></svg>
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <nav class="noir-stages" aria-label="Experience stages" data-noir="stages">
+        <ol class="noir-stages__list">
+          <li class="noir-stage" data-intro="stage">
+            <button class="noir-stage__button" type="button" aria-current="step" data-stage="0">
+              <span class="noir-stage__num">01</span><span class="noir-stage__label">Awakening</span>
+            </button>
+            <span class="noir-stage__rail" aria-hidden="true"><span class="noir-stage__fill"></span></span>
+          </li>
+          <li class="noir-stage" data-intro="stage">
+            <button class="noir-stage__button" type="button" data-stage="1">
+              <span class="noir-stage__num">02</span><span class="noir-stage__label">Creation</span>
+            </button>
+            <span class="noir-stage__rail" aria-hidden="true"><span class="noir-stage__fill"></span></span>
+          </li>
+          <li class="noir-stage" data-intro="stage">
+            <button class="noir-stage__button" type="button" data-stage="2">
+              <span class="noir-stage__num">03</span><span class="noir-stage__label">Experience</span>
+            </button>
+            <span class="noir-stage__rail" aria-hidden="true"><span class="noir-stage__fill"></span></span>
+          </li>
+          <li class="noir-stage" data-intro="stage">
+            <button class="noir-stage__button" type="button" data-stage="3">
+              <span class="noir-stage__num">04</span><span class="noir-stage__label">Impact</span>
+            </button>
+          </li>
+        </ol>
+      </nav>
+
+      <div class="noir-hint" data-intro="controls">
+        <span class="noir-hint__orb" aria-hidden="true" data-noir="orb">
+          <svg viewBox="0 0 56 56">
+            <circle class="noir-hint__ring" cx="28" cy="28" r="27"/>
+            <g class="noir-hint__lights" data-noir="orb-lights">
+              <ellipse cx="39.5" cy="13.5" rx="1.6" ry="3.6" transform="rotate(-38 39.5 13.5)"/>
+              <path d="M16 44.5c2.2 1.3 4.6 2 7 2.3"/>
+            </g>
+          </svg>
+        </span>
+        <span class="noir-hint__text">
+          <span class="noir-hint__mouse">Move your cursor<br>to explore</span>
+          <span class="noir-hint__touch">Move your finger<br>to explore</span>
+        </span>
+      </div>
+
+      <button class="noir-scroll" type="button" data-noir="scroll" data-intro="controls" aria-label="Scroll to explore the scene">
+        <span class="noir-scroll__label">Scroll</span>
+        <span class="noir-scroll__rail" aria-hidden="true">
+          <span class="noir-scroll__fill" data-noir="scroll-fill"></span>
+          <span class="noir-scroll__pulse"></span>
+        </span>
+        <span class="noir-scroll__dot" aria-hidden="true" data-noir="scroll-dot"></span>
+      </button>
+
+      <button class="noir-sound" type="button" data-noir="sound" data-intro="controls" aria-pressed="false">
+        <span class="noir-sound__ring" aria-hidden="true">
+          <svg viewBox="0 0 24 24" class="noir-sound__bars">
+            <path class="noir-sound__tick" d="M3.5 12h2"/>
+            <path class="noir-sound__bar" style="--i:1" d="M8.5 9v6"/>
+            <path class="noir-sound__bar" style="--i:2" d="M12 6.5v11"/>
+            <path class="noir-sound__bar" style="--i:3" d="M15.5 9v6"/>
+            <path class="noir-sound__tick" d="M18.5 12h2"/>
+          </svg>
+        </span>
+        <span class="noir-sound__text">Sound<br><span data-noir="sound-state">Off</span></span>
+      </button>
+
+      <div class="noir-hero__curtain" aria-hidden="true"></div>
+    </section>
+  </div>
+</body>
+</html>
